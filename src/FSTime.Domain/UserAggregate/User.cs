@@ -4,6 +4,8 @@ namespace FSTime.Domain.UserAggregate;
 
 public class User : AggregateRoot
 {
+    private bool _verified;
+
     public string UserName { get; } = null!;
 
     public string Password { get; } = null!;
@@ -16,6 +18,7 @@ public class User : AggregateRoot
         UserName = name;
         Password = password;
         Email = email;
+        _verified = false;
     }
 
     private User() { }
