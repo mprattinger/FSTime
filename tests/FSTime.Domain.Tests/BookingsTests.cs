@@ -1,14 +1,14 @@
-using System;
+using FSTime.Domain.BookingAggregate;
 
 namespace FSTime.Domain.Tests;
 
 public class BookingsTests
 {
-  [Fact]
-  public void CreateBooking()
-  {
-    var booking = new Booking(Guid.NewGuid(), DateTime.Now);
+    [Fact]
+    public void CreateBooking()
+    {
+        var booking = new Booking(Guid.NewGuid(), DateTime.Now);
 
-    Assert.NotNull(booking);
-  }
+        Assert.NotNull(booking);
+    }
 }

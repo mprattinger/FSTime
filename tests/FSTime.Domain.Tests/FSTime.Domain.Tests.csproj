@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\FSTime.Domain\FSTime.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

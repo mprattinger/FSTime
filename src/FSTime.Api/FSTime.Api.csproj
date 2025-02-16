@@ -6,4 +6,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="FlintSoft.Endpoints" Version="0.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FSTime.Application\FSTime.Application.csproj" />
+    <ProjectReference Include="..\FSTime.Contracts\FSTime.Contracts.csproj" />
+    <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj" />
+    <ProjectReference Include="..\FSTime.Infrastructure\FSTime.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

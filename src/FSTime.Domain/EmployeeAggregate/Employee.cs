@@ -1,4 +1,5 @@
 using System;
+using ErrorOr;
 using FSTime.Domain.Common;
 
 namespace FSTime.Domain.EmployeeAggregate;

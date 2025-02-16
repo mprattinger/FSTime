@@ -17,13 +17,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSTime.Contracts", "src\FST
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSTime.Infrastructure", "src\FSTime.Infrastructure\FSTime.Infrastructure.csproj", "{0D79423E-6C46-4502-A20E-D30B42D3D8BF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{106F870C-35A3-4E87-8A64-7C2DA5863E47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C92C64B9-4979-46F9-8065-CF398B686F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -51,8 +50,11 @@ Global
 		{0D79423E-6C46-4502-A20E-D30B42D3D8BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D79423E-6C46-4502-A20E-D30B42D3D8BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C92C64B9-4979-46F9-8065-CF398B686F97} = {5F1418EB-BA0F-4D20-A47E-5A5B070A91E9}
+		{C92C64B9-4979-46F9-8065-CF398B686F97} = {106F870C-35A3-4E87-8A64-7C2DA5863E47}
 		{8A8A658A-38C0-4D2B-B145-1AE583C7C28D} = {5F1418EB-BA0F-4D20-A47E-5A5B070A91E9}
 		{D25F12F2-B465-4EFD-9275-2B4FA64ED9A0} = {5F1418EB-BA0F-4D20-A47E-5A5B070A91E9}
 		{8A6BA96B-566E-4FAC-85D9-B4A4B421D3C1} = {5F1418EB-BA0F-4D20-A47E-5A5B070A91E9}
