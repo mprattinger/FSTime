@@ -12,14 +12,14 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddAuth(builder.Configuration);
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapGet("/", () => "Hello World!");
 
 app.MapEndpoints();
 

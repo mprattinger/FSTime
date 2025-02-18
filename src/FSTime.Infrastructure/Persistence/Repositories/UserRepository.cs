@@ -13,6 +13,16 @@ public class UserRepository(FSTimeDbContext context) : IUserRepository
         return user;
     }
 
+    public async Task<User?> GetUser(string username)
+    {
+        return await context.Users.FirstOrDefaultAsync(x => x.UserName == username);
+    }
+
+    public async Task<User?> GetUserById(Guid id)
+    {
+        return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+    }
+
     public async Task<bool> UserExists(string username)
     {
         return await context.Users.AnyAsync(u => u.UserName == username);

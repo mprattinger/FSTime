@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+﻿using FSTime.Contracts.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace FSTime.Api;
 
@@ -8,7 +7,7 @@ public static class Extensions
 {
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtConf = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        var jwtConf = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>();
         if (jwtConf is not null)
         {
             services.AddSingleton(jwtConf);
@@ -17,18 +16,7 @@ public static class Extensions
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtConf?.Issuer,
-                    ValidAudience = jwtConf?.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(jwtConf?.Secret!)),
-
-                };
+                options.TokenValidationParameters = Utils.GetTokenValidationParameters(jwtConf?.Issuer!, jwtConf?.Audience!, jwtConf?.Secret!);
                 options.MapInboundClaims = false;
             });
 

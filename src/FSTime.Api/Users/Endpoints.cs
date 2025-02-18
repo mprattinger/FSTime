@@ -8,6 +8,8 @@ namespace FSTime.Api.Users;
 
 public class Endpoints : IEndpoint
 {
+
+
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost("users/register", async (RegisterUserRequest request, IMediator mediator) =>
