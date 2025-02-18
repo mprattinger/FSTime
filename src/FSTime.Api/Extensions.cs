@@ -1,4 +1,5 @@
 ﻿using FSTime.Contracts.Authorization;
+using FSTime.Infrastructure.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace FSTime.Api;
@@ -24,9 +25,4 @@ public static class Extensions
 
         return services;
     }
-}
-
-record JwtSettings(string? Secret, int? ExpiryMinutes, string? Issuer, string Audience)
-{
-    public const string SectionName = "JwtSettings";
 }
