@@ -8,6 +8,7 @@ public static class Extensions
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITenantRepository, TenantRepository>();
         return services;
     }
 }

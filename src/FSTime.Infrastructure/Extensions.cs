@@ -10,7 +10,7 @@ public static class Extensions
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPersistent();
+        services.AddPersistent(configuration);
         services.AddServices();
 
         services.AddAuth(configuration);

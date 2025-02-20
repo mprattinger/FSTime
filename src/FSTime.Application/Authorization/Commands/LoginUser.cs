@@ -36,13 +36,18 @@ public static class LoginUser
                 {
                     return AuthorizationErrors.Login_Not_Valid();
                 }
-
+                
                 var user = await userRepository.GetUser(request.UserName);
                 if (user is null)
                 {
                     return AuthorizationErrors.Login_Not_Valid();
                 }
 
+                if (!user.Verified)
+                {
+                    return AuthorizationErrors.User_Not_Verified();
+                }
+                
                 var pwResult = passwordService.VerifyPassword(user.Password, request.Password);
                 if (pwResult == PasswordVerificationResult.Failed)
                 {
