@@ -4,16 +4,18 @@ namespace FSTime.Domain.Tests.TestUtils;
 
 public class EmployeeFactory
 {
-  public static Employee CreateActiveEmployee()
+  public static Employee? CreateActiveEmployee()
   {
-    var e = new Employee(new DateOnly(2021, 1, 1), 25);
-    e.AddWorkSchedule(Guid.NewGuid());
-    return e;
+    // var e = new Employee(new DateOnly(2021, 1, 1), 25);
+    // e.AddWorkSchedule(Guid.NewGuid());
+    // return e;
+    return default;
   }
 
-  public static Employee CreateInactiveEmployee()
+  public static Employee? CreateInactiveEmployee()
   {
-    var e = new Employee(new DateOnly(2021, 1, 1), 25);
-    return e;
+    // var e = new Employee(new DateOnly(2021, 1, 1), 25);
+    // return e;
+    return default;
   }
 }

@@ -12,7 +12,7 @@ public class EmployeeTests
     var employee = EmployeeFactory.CreateInactiveEmployee();
 
     // Act
-    var result = employee.IsActive();
+    var result = employee?.IsActive();
 
     // Assert
     Assert.False(result);
@@ -25,7 +25,7 @@ public class EmployeeTests
     var employee = EmployeeFactory.CreateActiveEmployee();
 
     // Act
-    var result = employee.IsActive();
+    var result = employee?.IsActive();
 
     // Assert
     Assert.True(result);

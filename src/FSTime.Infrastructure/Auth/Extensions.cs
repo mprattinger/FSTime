@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FSTime.Infrastructure.Auth.Permissions;
 
 namespace FSTime.Infrastructure.Auth;
 
@@ -49,6 +50,8 @@ public static class Extensions
 
         services.AddAuthorization();
 
+        services.AddPermissions();
+        
         return services;
     }
 }

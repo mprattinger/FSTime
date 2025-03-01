@@ -1,4 +1,6 @@
+using FSTime.Domain.Common.ValueObjects;
 using FSTime.Domain.TenantAggregate;
+using FSTime.Domain.UserAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,5 +15,22 @@ public class TenantConfigurations : IEntityTypeConfiguration<Tenant>
 
         builder.Property(x => x.Name);
         builder.Property(x => x.IsLicensed);
+        
+        builder.OwnsMany<TenantRole>(x => x.Users, tr =>
+        {
+            tr.ToTable("TenantRoles");
+            tr.HasKey(t => new { t.TenantId, t.UserId });
+            
+            tr.Property(t => t.TenantId).ValueGeneratedNever();
+            tr.Property(t => t.UserId).ValueGeneratedNever();
+            tr.Property(t => t.RoleName);
+
+            tr.WithOwner().HasForeignKey(r => r.TenantId);
+            
+            // tr.HasOne<User>()
+            //     .WithOne()
+            //     .HasForeignKey<TenantRole>(x => x.UserId);
+        });
+
     }
 }

@@ -9,7 +9,7 @@ public class PasswordService : IPasswordService
 
     public string HashPassword(string password)
     {
-        return _passwordHasher.HashPassword("", password);
+        return _passwordHasher.HashPassword("", password.Normalize()).Normalize();
     }
 
     public PasswordVerificationResult VerifyPassword(string hashedPassword, string providedPassword)

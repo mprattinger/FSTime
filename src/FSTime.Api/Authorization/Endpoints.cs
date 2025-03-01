@@ -48,7 +48,7 @@ public class Endpoints : IEndpoint
             return Results.Unauthorized();
         });
 
-        app.MapGet("auth/logout", async (HttpRequest request, HttpResponse response) =>
+        app.MapGet("auth/logout", (HttpRequest request, HttpResponse response) =>
         {
             if (!request.Cookies.Any(x => x.Key == COOKIENAME))
             {

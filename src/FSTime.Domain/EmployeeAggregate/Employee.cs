@@ -11,10 +11,12 @@ public class Employee : AggregateRoot
     private Guid _workScheduleId;
     private readonly DateOnly _entryDate;
     private readonly int _vacationDaysPerYear;
-
-    public Employee(DateOnly entryDate, int vacationDays, Guid? id = null)
+    private Guid _companyId;
+    
+    public Employee(Guid companyId, DateOnly entryDate, int vacationDays, Guid? id = null)
     : base(id ?? Guid.NewGuid())
     {
+        _companyId = companyId;
         _isActive = true;
         _entryDate = entryDate;
         _vacationDaysPerYear = vacationDays;
