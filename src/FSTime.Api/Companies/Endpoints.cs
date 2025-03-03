@@ -2,6 +2,7 @@ using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Companies.Commands;
 using FSTime.Application.Companies.Queries;
+using FSTime.Contracts.Authorization;
 using FSTime.Contracts.Company;
 using MediatR;
 using OneOf.Types;
@@ -13,28 +14,30 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("companies", async (CreateCompanyRequest request, HttpRequest httpRequest, IMediator mediator) =>
+        app.MapPost("companies", async (CreateCompanyRequest request, HttpContext context, IMediator mediator) =>
         {
-            if (!httpRequest.Headers.TryGetValue("TENANT", out var tid))
+            var tenantId = context.GetTenantIdFromHttpContext();
+            if (tenantId is null)
             {
-                return Error.Unexpected("No Tenant provided").ToProblemDetails();
-            }
-
-            if (!Guid.TryParse(tid, out var tenantId))
-            {
-                return Error.Unexpected("No Tenant provided").ToProblemDetails();
+                return Results.Unauthorized();
             }
             
-            var result = await mediator.Send(new CreateCompany.Command(tenantId, request.CompanyName));
+            var result = await mediator.Send(new CreateCompany.Command(tenantId.Value, request.CompanyName));
             return result.Match(
                 id => Results.Created("companies/{id}", id.ToString()),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
         }).RequireAuthorization("TENANT.ADMIN");
 
-        app.MapGet("companies/{tenantId}", async (Guid tenantId, IMediator mediator) =>
+        app.MapGet("companies/{tenantId}", async (HttpContext context, IMediator mediator) =>
         {
-            var result = await mediator.Send(new GetCompaniesByTenant.Query(tenantId));
+            var tenantId = context.GetTenantIdFromHttpContext();
+            if (tenantId is null)
+            {
+                return Results.Unauthorized();
+            }
+            
+            var result = await mediator.Send(new GetCompaniesByTenant.Query(tenantId.Value));
             return result.Match(
                 companies => Results.Ok(companies),
                 error => Results.BadRequest(error.ToProblemDetails())

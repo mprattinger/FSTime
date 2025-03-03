@@ -1,4 +1,5 @@
 using FSTime.Application.Common.Interfaces;
+using FSTime.Contracts.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,19 +41,16 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
             {
                 return;
             }
-            var ctx = (DefaultHttpContext)context.Resource;
-            if (!ctx.Request.Headers.TryGetValue("TENANT", out var tid))
-            {
-                return;
-            }
+            var ctx = (HttpContext)context.Resource;
+            var tid = ctx.GetTenantIdFromHttpContext();
 
-            if (!Guid.TryParse(tid, out var tenantId))
+            if (tid is null)
             {
                 return;
             }
             //Für den Tenant, hat der User eine eigene Rolle in der TenantRole Tabelle.
             //In Action steht der Name der Rolle
-            var hasRole = await tenantRepository.UserHasTenantRole(tenantId, parsedUserId, action);
+            var hasRole = await tenantRepository.UserHasTenantRole(tid!.Value, parsedUserId, action);
             if (hasRole)
             {
                 context.Succeed(requirement);

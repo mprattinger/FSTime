@@ -13,7 +13,7 @@ public static class RefreshToken
     {
         public async Task<ErrorOr<RefreshTokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            if (tokenService.TryValidateToken(request.refreshToken, out var userId))
+            if (tokenService.TryValidateToken(request.refreshToken, out var userId, out var tenantId))
             {
                 if (userId is null)
                 {
@@ -27,7 +27,7 @@ public static class RefreshToken
                     return Error.Unauthorized();
                 }
 
-                var tokenResult = tokenService.GenerateToken(user);
+                var tokenResult = tokenService.GenerateToken(user, tenantId);
                 return new RefreshTokenResponse(user.UserName, tokenResult.AccessToken, tokenResult.AccessTokenExpiryDate);
             }
             return Error.Unauthorized();

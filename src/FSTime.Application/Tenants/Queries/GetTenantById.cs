@@ -5,9 +5,9 @@ using FSTime.Application.Common.Interfaces;
 
 namespace FSTime.Application.Tenants.Queries;
 
-public static class GetUserTenant
+public static class GetTenantById
 {
-    public record Query(Guid userId) : IRequest<ErrorOr<Tenant>>;
+    public record Query(Guid tenantId) : IRequest<ErrorOr<Tenant>>;
     
     internal sealed class Handler(ITenantRepository tenantRepository) : IRequestHandler<Query, ErrorOr<Tenant>>
     {
@@ -15,13 +15,13 @@ public static class GetUserTenant
         {
             try
             {
-                var t = await tenantRepository.GetTenantsByUserId(query.userId);
-                if (t.Count == 0 || t.First() is null)
+                var t = await tenantRepository.GetTenantById(query.tenantId);
+                if (t is null)
                 {
-                    return TenantErrors.Tenant_Lookup_UserId_NotFound();
+                    return TenantErrors.Tenant_ById_NotFound();
                 }
 
-                return t.First()!;
+                return t;
             }
             catch (Exception e)
             {

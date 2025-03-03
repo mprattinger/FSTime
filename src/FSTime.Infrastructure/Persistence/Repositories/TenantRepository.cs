@@ -16,13 +16,13 @@ public class TenantRepository(FSTimeDbContext context) : ITenantRepository
         return tenant;
     }
     
-    public async Task<Tenant?> GetTenantByUserId(Guid userId)
+    public async Task<List<Tenant>> GetTenantsByUserId(Guid userId)
     {
-        var tenant = await context.Set<Tenant>()
+        var tenants = await context.Set<Tenant>()
             .Where(x => x.Users.Any(y => y.UserId == userId))
             .Include(x => x.Users)
-            .FirstOrDefaultAsync();
-        return tenant;
+            .ToListAsync();
+        return tenants;
     }
 
     public async Task<Tenant?> GetTenantById(Guid tenantId)

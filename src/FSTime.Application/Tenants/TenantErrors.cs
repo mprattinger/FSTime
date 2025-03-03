@@ -13,4 +13,7 @@ public static class TenantErrors
 
     public static ErrorOr<Tenant> Tenant_Lookup_UserId_NotFound() => Error.NotFound("TENANT_HANDLER.WITH_USERID_NOT_FOUND",
         $"When trying to get the tenant by user id, the tenant was not found");
+    
+    public static ErrorOr<Tenant> Tenant_ById_NotFound() => Error.NotFound("TENANT_HANDLER.WITH_TENANT_ID_NOT_FOUND",
+        $"When trying to get the tenant by id, the tenant was not found");
 }

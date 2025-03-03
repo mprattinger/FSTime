@@ -14,7 +14,13 @@ public class Endpoints : IEndpoint
     {
         app.MapPost("auth/login", async (LoginRequest request, IMediator mediator, HttpResponse response) =>
         {
-            var result = await mediator.Send(new LoginUser.Command(request.Username, request.Password));
+            Guid? tenantId = null;
+            if (request.TenantId is not null)
+            {
+                tenantId = Guid.Parse(request.TenantId);
+            }
+            
+            var result = await mediator.Send(new LoginUser.Command(request.Username, request.Password, tenantId));
 
             if (result.IsError)
             {

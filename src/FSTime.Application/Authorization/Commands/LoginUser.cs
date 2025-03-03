@@ -2,6 +2,7 @@
 using FluentValidation;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Authorization;
+using FSTime.Domain.TenantAggregate;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -9,7 +10,7 @@ namespace FSTime.Application.Authorization.Commands;
 
 public static class LoginUser
 {
-    public record Command(string UserName, string Password) : IRequest<ErrorOr<LoginResponse>>;
+    public record Command(string UserName, string Password, Guid? Tenant) : IRequest<ErrorOr<LoginResponse>>;
 
     public class Validator : AbstractValidator<Command>
     {
@@ -20,7 +21,7 @@ public static class LoginUser
         }
     }
 
-    internal sealed class Handler(IValidator<Command> validator, IUserRepository userRepository, IPasswordService passwordService, ITokenService tokenGeneratorService) : IRequestHandler<Command, ErrorOr<LoginResponse>>
+    internal sealed class Handler(IValidator<Command> validator, IUserRepository userRepository, IPasswordService passwordService, ITokenService tokenGeneratorService, ITenantRepository tenantRepository) : IRequestHandler<Command, ErrorOr<LoginResponse>>
     {
         public async Task<ErrorOr<LoginResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
@@ -53,8 +54,30 @@ public static class LoginUser
                 {
                     return AuthorizationErrors.Login_Not_Valid();
                 }
+                
+                //Check if any Tenants
+                var tenants = await tenantRepository.GetTenantsByUserId(user.Id);
+                if (tenants.Count > 0 && request.Tenant is null)
+                {
+                    return Error.Custom(99, "USER_LOGIN.MULTIPLE_TENANTS", "Dem Benutzer sind mehrere Mandanten zugeordnet.");
+                }
 
-                var tResult = tokenGeneratorService.GenerateToken(user);
+                Tenant? tenant = null;
+                if(tenants.Count > 0 && request.Tenant is not null)
+                {
+                    tenant = tenants.FirstOrDefault(x => x.Id == request.Tenant);
+                    if (tenant is null)
+                    {
+                        return Error.NotFound("USER_LOGIN.GIVEN_TENANT_NOT_FOUND", "Der Mandant wurde nicht gefunden.");
+                    }
+                }
+
+                if (tenants.Count == 1)
+                {
+                    tenant = tenants.First();
+                }
+                
+                var tResult = tokenGeneratorService.GenerateToken(user, tenant?.Id);
 
                 return new LoginResponse(user.UserName, tResult.AccessToken, tResult.AccessTokenExpiryDate, tResult.RefreshToken, tResult.RefreshTokenExpiryDate);
             }

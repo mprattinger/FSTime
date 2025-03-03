@@ -1,8 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
+using FSTime.Api.Companies;
 using FSTime.Application.Tenants.Commands;
 using FSTime.Application.Tenants.Queries;
+using FSTime.Contracts.Authorization;
 using FSTime.Contracts.Tenants;
 using FSTime.Infrastructure.Persistence.Repositories;
 using MediatR;
@@ -49,15 +51,14 @@ public class Endpoints : IEndpoint
             {
                 return Results.Unauthorized();
             }
-            
-            var idClaim = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+
+            var idClaim = context.GetTenantIdFromHttpContext();
             if(idClaim is null)
             {
                 return Results.Unauthorized();
             }
 
-            var guid = Guid.Parse(idClaim.Value);
-            var result = await mediator.Send(new GetUserTenant.Query(guid));
+            var result = await mediator.Send(new GetTenantById.Query(idClaim.Value));
             return result.Match(
                 t => Results.Ok(t),
                 err => err.ToProblemDetails()
