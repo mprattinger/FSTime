@@ -9,6 +9,7 @@ public static class WorkScheduleFactory
   public static ErrorOr<WorkSchedule> CreateValidWeekHoursSchedule()
   {
     return WorkSchedule.CreateWorkSchedule(
+        Guid.NewGuid(),
         38.5F,
         new WorkDay[] { WorkDay.Monday, WorkDay.Tuesday, WorkDay.Wednesday, WorkDay.Thursday, WorkDay.Friday });
   }
@@ -16,6 +17,7 @@ public static class WorkScheduleFactory
   public static ErrorOr<WorkSchedule> CreateWeeklyHoursExceedingSchedule()
   {
     return WorkSchedule.CreateWorkSchedule(
+        Guid.NewGuid(),
         39F,
         new WorkDay[] { WorkDay.Monday, WorkDay.Tuesday, WorkDay.Wednesday, WorkDay.Thursday, WorkDay.Friday });
   }
@@ -23,6 +25,7 @@ public static class WorkScheduleFactory
   public static ErrorOr<WorkSchedule> CreateDaylyHoursExceedingSchedule()
   {
     return WorkSchedule.CreateWorkSchedule(
+        Guid.NewGuid(),
         33F,
         new WorkDay[] { WorkDay.Monday, WorkDay.Tuesday, WorkDay.Wednesday });
   }
@@ -30,6 +33,7 @@ public static class WorkScheduleFactory
   public static ErrorOr<WorkSchedule> CreateValidDayHoursSchedule()
   {
     return WorkSchedule.CreateWorkSchedule(
+        Guid.NewGuid(),
         new List<WorkHoursPerDay>
         {
             new WorkHoursPerDay(WorkDay.Monday, 8.12F),
@@ -43,6 +47,7 @@ public static class WorkScheduleFactory
   public static ErrorOr<WorkSchedule> CreateInValidDayHoursSchedule_WeekHours()
   {
     return WorkSchedule.CreateWorkSchedule(
+        Guid.NewGuid(),
         new List<WorkHoursPerDay>
         {
             new WorkHoursPerDay(WorkDay.Monday, 8.12F),
@@ -56,6 +61,7 @@ public static class WorkScheduleFactory
   public static ErrorOr<WorkSchedule> CreateInValidDayHoursSchedule_DayHours()
   {
     return WorkSchedule.CreateWorkSchedule(
+        Guid.NewGuid(),
         new List<WorkHoursPerDay>
         {
             new WorkHoursPerDay(WorkDay.Monday, 8.12F),

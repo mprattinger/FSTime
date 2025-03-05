@@ -6,20 +6,24 @@ namespace FSTime.Domain.WorkScheduleAggregate;
 
 public class WorkSchedule : AggregateRoot
 {
+    const float MAX_WEEKLY_WORKING_HOURS = 38.5F; //TODO -> move to configuration
+    const float MAX_DAYLY_WORKING_HOURS = 10.0F; //TODO -> move to configuration
 
-    const float MAX_WEEKLY_WORKING_HOURS = 38.5F;
-    const float MAX_DAYLY_WORKING_HOURS = 10.0F;
-
+    internal Guid _companyId;
+    
     internal List<WorkHoursPerDay> _workSchedules = [];
 
-    private WorkSchedule(Guid? id = null)
+    internal string _description = "";
+    
+    private WorkSchedule(Guid companyId, Guid? id = null)
     : base(id ?? Guid.NewGuid())
     {
+        _companyId = companyId;
     }
 
-    public static ErrorOr<WorkSchedule> CreateWorkSchedule(float weeklyWorkingHours, WorkDay[] workDays)
+    public static ErrorOr<WorkSchedule> CreateWorkSchedule(Guid companyId, float weeklyWorkingHours, WorkDay[] workDays)
     {
-        var instance = new WorkSchedule();
+        var instance = new WorkSchedule(companyId);
 
         if (weeklyWorkingHours > MAX_WEEKLY_WORKING_HOURS)
         {
@@ -38,7 +42,7 @@ public class WorkSchedule : AggregateRoot
         return instance;
     }
 
-    public static ErrorOr<WorkSchedule> CreateWorkSchedule(List<WorkHoursPerDay> workSchedules)
+    public static ErrorOr<WorkSchedule> CreateWorkSchedule(Guid companyId, List<WorkHoursPerDay> workSchedules)
     {
         var weeklyWorkingHours = workSchedules.Sum(x => x.Hours);
         var maxDaylyHours = workSchedules.Max(x => x.Hours);
@@ -53,9 +57,11 @@ public class WorkSchedule : AggregateRoot
             return WorkScheduleErrors.WorkingHoursTooHigh(maxDaylyHours, MAX_DAYLY_WORKING_HOURS);
         }
 
-        var instance = new WorkSchedule();
+        var instance = new WorkSchedule(companyId);
         instance._workSchedules = workSchedules;
 
         return instance;
     }
+
+    private WorkSchedule() {}
 }
