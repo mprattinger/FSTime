@@ -12,12 +12,20 @@
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FSTime.Contracts\FSTime.Contracts.csproj" />
     <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Companies\" />
+    <Folder Include="Users\" />
+    <Folder Include="Tenants\" />
   </ItemGroup>
 
 </Project>

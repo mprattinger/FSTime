@@ -1,0 +1,18 @@
+.list {
+  background-color: red;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .customer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.2rem;
+    padding: 1rem;
+
+    .c-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+  }
+}

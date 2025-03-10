@@ -6,6 +6,8 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 builder.Services.AddEndpoints(Assembly.GetExecutingAssembly());
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 

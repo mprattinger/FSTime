@@ -1,7 +1,4 @@
-﻿
-using FSTime.Domain.UserAggregate;
-
-namespace FSTime.Domain.Common.ValueObjects;
+﻿namespace FSTime.Domain.Common.ValueObjects;
 
 public class TenantRole : ValueObject
 {
@@ -15,7 +12,7 @@ public class TenantRole : ValueObject
         TenantId = tenantId;
         RoleName = roleName;
     }
-    
+
     private TenantRole() { }
 
     public override IEnumerable<object?> GetEqualityComponents()

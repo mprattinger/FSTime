@@ -1,4 +1,4 @@
-using FSTime.Domain.Common;
+﻿using FSTime.Domain.Common;
 
 namespace FSTime.Domain.UserAggregate;
 

@@ -37,7 +37,7 @@ public static class LoginUser
                 {
                     return AuthorizationErrors.Login_Not_Valid();
                 }
-                
+
                 var user = await userRepository.GetUser(request.UserName);
                 if (user is null)
                 {
@@ -48,13 +48,13 @@ public static class LoginUser
                 {
                     return AuthorizationErrors.User_Not_Verified();
                 }
-                
+
                 var pwResult = passwordService.VerifyPassword(user.Password, request.Password);
                 if (pwResult == PasswordVerificationResult.Failed)
                 {
                     return AuthorizationErrors.Login_Not_Valid();
                 }
-                
+
                 //Check if any Tenants
                 var tenants = await tenantRepository.GetTenantsByUserId(user.Id);
                 if (tenants.Count > 0 && request.Tenant is null)
@@ -63,7 +63,7 @@ public static class LoginUser
                 }
 
                 Tenant? tenant = null;
-                if(tenants.Count > 0 && request.Tenant is not null)
+                if (tenants.Count > 0 && request.Tenant is not null)
                 {
                     tenant = tenants.FirstOrDefault(x => x.Id == request.Tenant);
                     if (tenant is null)
@@ -76,7 +76,7 @@ public static class LoginUser
                 {
                     tenant = tenants.First();
                 }
-                
+
                 var tResult = tokenGeneratorService.GenerateToken(user, tenant?.Id);
 
                 return new LoginResponse(user.UserName, tResult.AccessToken, tResult.AccessTokenExpiryDate, tResult.RefreshToken, tResult.RefreshTokenExpiryDate);

@@ -1,6 +1,4 @@
-using System;
-
-namespace FSTime.Domain.Common;
+﻿namespace FSTime.Domain.Common;
 
 public abstract class ValueObject
 {

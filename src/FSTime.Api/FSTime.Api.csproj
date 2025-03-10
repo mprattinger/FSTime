@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -10,7 +10,7 @@
   <ItemGroup>
     <PackageReference Include="FlintSoft.Endpoints" Version="0.1.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -21,6 +21,7 @@
     <ProjectReference Include="..\FSTime.Contracts\FSTime.Contracts.csproj" />
     <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj" />
     <ProjectReference Include="..\FSTime.Infrastructure\FSTime.Infrastructure.csproj" />
+    <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

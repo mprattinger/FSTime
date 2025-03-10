@@ -1,6 +1,6 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 
 namespace FSTime.Contracts.Authorization;
 
@@ -17,12 +17,10 @@ public static class Utils
             ValidIssuer = audience,
             IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(secret)),
-
         };
-
         return p;
     }
-    
+
     public static Guid? GetTenantIdFromHttpContext(this HttpContext httpContext)
     {
         var tenantClaim = httpContext.User.Claims.FirstOrDefault(x => x.Type == "TENANT");

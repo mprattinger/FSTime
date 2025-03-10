@@ -1,3 +1,2 @@
-namespace FSTime.Contracts.Tenants;
-
+﻿namespace FSTime.Contracts.Tenants;
 public record CreateTenantRequest(string Name);

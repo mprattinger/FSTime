@@ -4,7 +4,6 @@ using FSTime.Contracts.Authorization;
 using MediatR;
 
 namespace FSTime.Application.Authorization.Commands;
-
 public static class RefreshToken
 {
     public record Command(string refreshToken) : IRequest<ErrorOr<RefreshTokenResponse>>;

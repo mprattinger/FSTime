@@ -1,6 +1,3 @@
-namespace FSTime.Contracts.Company;
+﻿namespace FSTime.Contracts.Company;
 
-public class CreateCompanyRequest
-{
-    public string CompanyName { get; set; } = "";
-}
+public record CreateCompanyRequest(string CompanyName);

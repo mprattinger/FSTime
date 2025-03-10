@@ -5,8 +5,6 @@ using FSTime.Application.Companies.Queries;
 using FSTime.Contracts.Authorization;
 using FSTime.Contracts.Company;
 using MediatR;
-using OneOf.Types;
-using Error = ErrorOr.Error;
 
 namespace FSTime.Api.Companies;
 
@@ -21,7 +19,7 @@ public class Endpoints : IEndpoint
             {
                 return Results.Unauthorized();
             }
-            
+
             var result = await mediator.Send(new CreateCompany.Command(tenantId.Value, request.CompanyName));
             return result.Match(
                 id => Results.Created("companies/{id}", id.ToString()),
@@ -36,7 +34,7 @@ public class Endpoints : IEndpoint
             {
                 return Results.Unauthorized();
             }
-            
+
             var result = await mediator.Send(new GetCompaniesByTenant.Query(tenantId.Value));
             return result.Match(
                 companies => Results.Ok(companies),

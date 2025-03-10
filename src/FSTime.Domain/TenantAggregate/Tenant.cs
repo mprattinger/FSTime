@@ -13,11 +13,11 @@ public class Tenant : AggregateRoot
     public List<TenantRole> Users { get; } = new();
 
     public List<Company> Companies { get; } = [];
-    
+
     public Tenant(string name, Guid? id = null) : base(id ?? Guid.CreateVersion7())
     {
         Name = name;
     }
-    
+
     private Tenant() { }
 }
