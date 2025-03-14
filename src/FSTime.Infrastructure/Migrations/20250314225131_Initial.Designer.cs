@@ -6,40 +6,42 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+
 #nullable disable
 
 namespace FSTime.Infrastructure.Migrations
 {
     [DbContext(typeof(FSTimeDbContext))]
-    [Migration("20250220220140_tenant-role")]
-    partial class tenantrole
+    [Migration("20250314225131_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.1")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FSTime.Domain.Common.ValueObjects.TenantRole", b =>
+            modelBuilder.Entity("FSTime.Domain.CompanyAggregate.Company", b =>
                 {
-                    b.Property<Guid>("TenantId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("RoleName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("TenantId", "UserId");
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
 
-                    b.ToTable("TenantRoles");
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
@@ -72,6 +74,10 @@ namespace FSTime.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -82,6 +88,47 @@ namespace FSTime.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.CompanyAggregate.Company", b =>
+                {
+                    b.HasOne("FSTime.Domain.TenantAggregate.Tenant", "Tenant")
+                        .WithMany("Companies")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
+                {
+                    b.OwnsMany("FSTime.Domain.Common.ValueObjects.TenantRole", "Users", b1 =>
+                        {
+                            b1.Property<Guid>("TenantId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("RoleName")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("TenantId", "UserId");
+
+                            b1.ToTable("TenantRoles", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("TenantId");
+                        });
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
+                {
+                    b.Navigation("Companies");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,18 +3,19 @@ using FSTime.Infrastructure.Persistence;
 using FSTime.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FSTime.Infrastructure;
 
 public static class Extensions
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+    public static IHostApplicationBuilder? AddInfrastructure(this IHostApplicationBuilder? host)
     {
-        services.AddPersistent(configuration);
-        services.AddServices();
+        host?.AddPersistent();
+        host?.Services.AddServices();
 
-        services.AddAuth(configuration);
+        host?.AddAuth();
 
-        return services;
+        return host;
     }
 }

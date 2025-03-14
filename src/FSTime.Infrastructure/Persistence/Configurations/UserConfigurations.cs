@@ -13,6 +13,7 @@ internal class UserConfigurations : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.UserName);
         builder.Property(x => x.Password);
+        builder.Property(x => x.Salt);
         builder.Property(x => x.Email);
         builder.Property(x => x.Verified);
     }

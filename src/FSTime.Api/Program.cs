@@ -3,6 +3,7 @@ using FSTime.Api.Common.Errors;
 using FSTime.Application;
 using FSTime.Infrastructure;
 using System.Reflection;
+using FSTime.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,9 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddProblemDetails();
 
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddApplication();
+builder.AddInfrastructure();
+builder.AddApplication();
+builder.AddAuth();
 
 var app = builder.Build();
 

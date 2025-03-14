@@ -1,12 +1,16 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder.AddPostgres("postgres")
-    .WithDataBindMount(source: @"C:\tmp\fstimedb", isReadOnly: false)
+    .WithDataVolume()
     .WithPgAdmin();
 
 var db = postgres.AddDatabase("fstimedb");
 
-var api = builder.AddProject<Projects.FSTime_Api>("Api");
+var migrationService = builder.AddProject<Projects.FSTime_Services_DatabaseMigration>("MigrationService")
+    .WithReference(db);
+
+var api = builder.AddProject<Projects.FSTime_Api>("Api")
+    .WithReference(db);
 
 var client = builder.AddNpmApp("Client", "../Client", "dev")
     .WithNpmPackageInstallation()

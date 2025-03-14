@@ -1,0 +1,13 @@
+{
+  "name": "FlintSoft",
+  "isLicensed": false,
+  "roles": [
+    {
+      "userId": "eb2a6fab-12ea-4b22-972d-7e642ed82f88",
+      "tenantId": "01952569-34a1-7a41-939b-b0ef45a52477",
+      "roleName": "TENANTADMIN",
+      "user": null
+    }
+  ],
+  "id": "01952569-34a1-7a41-939b-b0ef45a52477"
+}

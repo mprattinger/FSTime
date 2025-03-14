@@ -4,6 +4,6 @@ namespace FSTime.Application.Common.Interfaces;
 
 public interface IPasswordService
 {
-    string HashPassword(string password);
-    PasswordVerificationResult VerifyPassword(string hashedPassword, string providedPassword);
+    (string password, string salt) HashPassword(string password, string? salt = null);
+    bool VerifyPassword(string hashedPassword, string hashedSalt,string providedPassword);
 }

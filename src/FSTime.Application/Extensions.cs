@@ -1,14 +1,15 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FSTime.Application;
 
 public static class Extensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IHostApplicationBuilder? AddApplication(this IHostApplicationBuilder? host)
     {
-        services.AddMediatR(opt => opt.RegisterServicesFromAssemblyContaining(typeof(Extensions)));
-        services.AddValidatorsFromAssembly(typeof(Extensions).Assembly);
-        return services;
+        host?.Services.AddMediatR(opt => opt.RegisterServicesFromAssemblyContaining(typeof(Extensions)));
+        host?.Services.AddValidatorsFromAssembly(typeof(Extensions).Assembly);
+        return host;
     }
 }

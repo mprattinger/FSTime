@@ -1,0 +1,9 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.5.10",
+  "title": "User not verified!",
+  "status": 409,
+  "USER_LOGIN.NOT_VERIFIED": [
+    "User not verified!"
+  ],
+  "traceId": "00-7885e9ee6e17396a025ac3288356dbde-e8d3ad341c3340ac-00"
+}

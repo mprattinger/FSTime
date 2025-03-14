@@ -49,8 +49,8 @@ public static class LoginUser
                     return AuthorizationErrors.User_Not_Verified();
                 }
 
-                var pwResult = passwordService.VerifyPassword(user.Password, request.Password);
-                if (pwResult == PasswordVerificationResult.Failed)
+                var pwResult = passwordService.VerifyPassword(user.Password, user.Salt, request.Password);
+                if (!pwResult)
                 {
                     return AuthorizationErrors.Login_Not_Valid();
                 }

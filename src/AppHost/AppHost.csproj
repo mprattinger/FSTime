@@ -20,6 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FSTime.Api\FSTime.Api.csproj" />
+    <ProjectReference Include="..\FSTime.Infrastructure\FSTime.Infrastructure.csproj" IsAspireProjectResource="false" />
+    <ProjectReference Include="..\FSTime.Services.DatabaseMigration\FSTime.Services.DatabaseMigration.csproj" />
   </ItemGroup>
 
 </Project>

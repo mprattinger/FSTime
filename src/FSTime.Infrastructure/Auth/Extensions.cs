@@ -5,20 +5,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FSTime.Infrastructure.Auth.Permissions;
+using Microsoft.Extensions.Hosting;
 
 namespace FSTime.Infrastructure.Auth;
 
 public static class Extensions
 {
-    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
+    public static IHostApplicationBuilder? AddAuth(this IHostApplicationBuilder? host)
     {
-        var jwtConf = configuration.GetSection("JwtSettings").Get<JwtSettings>();
+        var jwtConf = host?.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
         if (jwtConf is not null)
         {
-            services.AddSingleton(jwtConf);
+            host?.Services.AddSingleton(jwtConf);
         }
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        host?.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -48,10 +49,10 @@ public static class Extensions
                 };
             });
 
-        services.AddAuthorization();
+        host?.Services.AddAuthorization();
 
-        services.AddPermissions();
+        host?.Services.AddPermissions();
         
-        return services;
+        return host;
     }
 }
