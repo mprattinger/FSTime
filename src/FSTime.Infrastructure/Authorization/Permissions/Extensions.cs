@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FSTime.Infrastructure.Auth.Permissions;
+namespace FSTime.Infrastructure.Authorization.Permissions;
 
 public static class Extensions
 {

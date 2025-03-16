@@ -1,3 +1,245 @@
+POST https://localhost:7281/tenants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk1OWM1Mi0wZjIyLTc2MGEtOTBkYS03OTVhMTI2NGJjNzciLCJqdGkiOiJjZDJlYzk4Ny1hNGVmLTQxZDAtOGExMC02N2I4YjJjMGRkZTciLCJuYW1lIjoibXByYXR0aW5nZXIiLCJVTVVJRCI6IjAxOTU5YzUyLTBmMjItNzYwYS05MGRhLTc5NWExMjY0YmM3NyIsImV4cCI6MTc0MjE1NDI3OSwiaXNzIjoiRlNUaW1lIiwiYXVkIjoiRlNUaW1lIn0.qFaJt78rtcKdGRm_2emEDA7ZZvKT06QzruyU9d6QkTI
+Content-Length: 25
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "name": "FlintSoft"
+}
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T203439.200.json
+
+###
+
+POST https://localhost:7281/tenants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk1OWM1Mi0wZjIyLTc2MGEtOTBkYS03OTVhMTI2NGJjNzciLCJqdGkiOiI1ODdkYzMwZS1kYjc5LTQ4M2QtOWUzZi0wZDAxMWMzODA0MjQiLCJuYW1lIjoibXByYXR0aW5nZXIiLCJVTVVJRCI6IjAxOTU5YzUyLTBmMjItNzYwYS05MGRhLTc5NWExMjY0YmM3NyIsImV4cCI6MTc0MjE1MzU5MywiaXNzIjoiRlNUaW1lIiwiYXVkIjoiRlNUaW1lIn0.HLM4TZC5eJQ2UgBFaBpV1g3qHYCfAhTQf3VqOfA2X94
+Content-Length: 25
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "name": "FlintSoft"
+}
+
+###
+
+POST https://localhost:7281/tenants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk1OWM1Mi0wZjIyLTc2MGEtOTBkYS03OTVhMTI2NGJjNzciLCJqdGkiOiI1ODdkYzMwZS1kYjc5LTQ4M2QtOWUzZi0wZDAxMWMzODA0MjQiLCJuYW1lIjoibXByYXR0aW5nZXIiLCJVTVVJRCI6IjAxOTU5YzUyLTBmMjItNzYwYS05MGRhLTc5NWExMjY0YmM3NyIsImV4cCI6MTc0MjE1MzU5MywiaXNzIjoiRlNUaW1lIiwiYXVkIjoiRlNUaW1lIn0.HLM4TZC5eJQ2UgBFaBpV1g3qHYCfAhTQf3VqOfA2X94
+Content-Length: 25
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "name": "FlintSoft"
+}
+
+###
+
+POST https://localhost:7281/tenants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk1OWM1Mi0wZjIyLTc2MGEtOTBkYS03OTVhMTI2NGJjNzciLCJqdGkiOiI1ODdkYzMwZS1kYjc5LTQ4M2QtOWUzZi0wZDAxMWMzODA0MjQiLCJuYW1lIjoibXByYXR0aW5nZXIiLCJVTVVJRCI6IjAxOTU5YzUyLTBmMjItNzYwYS05MGRhLTc5NWExMjY0YmM3NyIsImV4cCI6MTc0MjE1MzU5MywiaXNzIjoiRlNUaW1lIiwiYXVkIjoiRlNUaW1lIn0.HLM4TZC5eJQ2UgBFaBpV1g3qHYCfAhTQf3VqOfA2X94
+Content-Length: 25
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "name": "FlintSoft"
+}
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T202313.200.json
+
+###
+
+POST https://localhost:7281/tenants
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTk1OWM1Mi0wZjIyLTc2MGEtOTBkYS03OTVhMTI2NGJjNzciLCJqdGkiOiJlNGU4MWEwMy01NTQzLTRhMDAtYjdlNi1mZmVkMWQ5MzgzNjIiLCJuYW1lIjoibXByYXR0aW5nZXIiLCJVTVVJRCI6IjAxOTU5YzUyLTBmMjItNzYwYS05MGRhLTc5NWExMjY0YmM3NyIsImV4cCI6MTc0MjE1MzQ5MiwiaXNzIjoiRlNUaW1lIiwiYXVkIjoiRlNUaW1lIn0.G5UC1B1ZhFb8Xv6a-oTVEsCHKtf3PWAGnTTp34KcZtw
+Content-Length: 25
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "name": "FlintSoft"
+}
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T202132.200.json
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T202035.409.json
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T202006.409.json
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T201923.409.json
+
+###
+
+POST https://localhost:7281/auth/login
+Content-Type: application/json
+Content-Length: 59
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "password": "Fl61291420"
+}
+
+<> 2025-03-16T201703.500.json
+
+###
+
+POST https://localhost:7281/users
+Content-Type: application/json
+Content-Length: 99
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "email": "mprattinger@outlook.com",
+  "password": "Fl61291420"  
+}
+
+###
+
+POST https://localhost:7281/users
+Content-Type: application/json
+Content-Length: 99
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "email": "mprattinger@outlook.com",
+  "password": "Fl61291420"  
+}
+
+###
+
+POST https://localhost:7281/users
+Content-Type: application/json
+Content-Length: 99
+User-Agent: IntelliJ HTTP Client/JetBrains Rider 2024.3.6
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+x-http2-scheme: https
+
+{
+  "username": "mprattinger",
+  "email": "mprattinger@outlook.com",
+  "password": "Fl61291420"  
+}
+
+###
+
 GET http://localhost:5293/tenants
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlYjJhNmZhYi0xMmVhLTRiMjItOTcyZC03ZTY0MmVkODJmODgiLCJqdGkiOiIwMDQwZGQ1Ni1lODQ0LTQwOGQtYjQ3OS02MDcxNGMyZTUyZTMiLCJuYW1lIjoibXByYXR0aW5nZXIiLCJVTVVJRCI6ImViMmE2ZmFiLTEyZWEtNGIyMi05NzJkLTdlNjQyZWQ4MmY4OCIsImV4cCI6MTc0MDA5NTA3MiwiaXNzIjoiRlNUaW1lIiwiYXVkIjoiRlNUaW1lIn0.NfjI__2llLmJlwalv7dIW6nM3Vgcu93twlG_RTK2w-g

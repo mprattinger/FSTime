@@ -1,5 +1,5 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
-POST http://localhost:5293/users
+POST https://localhost:7281/users
 Content-Type: application/json
 
 {

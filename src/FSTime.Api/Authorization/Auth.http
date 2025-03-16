@@ -1,4 +1,4 @@
-POST http://localhost:5293/auth/login
+POST https://localhost:7281/auth/login
 Content-Type: application/json
 
 {

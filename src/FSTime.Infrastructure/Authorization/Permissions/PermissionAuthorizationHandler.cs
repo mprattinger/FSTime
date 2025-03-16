@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace FSTime.Infrastructure.Auth.Permissions;
+namespace FSTime.Infrastructure.Authorization.Permissions;
 
 public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFactory)
 : AuthorizationHandler<PermissionRequirement>

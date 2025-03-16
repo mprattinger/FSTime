@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 
-namespace FSTime.Infrastructure.Auth.Permissions;
+namespace FSTime.Infrastructure.Authorization.Permissions;
 
 public class PermissionRequirement
 : IAuthorizationRequirement

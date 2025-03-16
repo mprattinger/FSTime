@@ -8,14 +8,14 @@ namespace FSTime.Api.Authorization;
 
 public class Endpoints : IEndpoint
 {
-    const string COOKIENAME = "refresh_token";
+    const string COOKIENAME = "refreshToken";
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         app.MapPost("auth/login", async (LoginRequest request, IMediator mediator, HttpResponse response) =>
         {
             Guid? tenantId = null;
-            if (request.TenantId is not null)
+            if (!string.IsNullOrEmpty(request.TenantId))
             {
                 tenantId = Guid.Parse(request.TenantId);
             }

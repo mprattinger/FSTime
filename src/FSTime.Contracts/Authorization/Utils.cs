@@ -14,7 +14,8 @@ public static class Utils
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = audience,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
             IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(secret)),
         };

@@ -39,7 +39,7 @@ public static class CreateUser
 
                 var pw = passwordService.HashPassword(request.password);
 
-                var user = new User(request.username, pw.password, pw.salt, request.email);
+                var user = new User(request.username, pw.password, request.email, pw.salt);
 
                 var res = await userRepository.AddUser(user);
 

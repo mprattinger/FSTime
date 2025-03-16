@@ -16,7 +16,6 @@ builder.Services.AddProblemDetails();
 
 builder.AddInfrastructure();
 builder.AddApplication();
-builder.AddAuth();
 
 var app = builder.Build();
 
