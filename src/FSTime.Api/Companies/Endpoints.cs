@@ -12,7 +12,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("companies", async (CreateCompanyRequest request, HttpContext context, IMediator mediator) =>
+        var grp = app.MapGroup("companies");
+        
+        grp.MapPost("", async (CreateCompanyRequest request, HttpContext context, IMediator mediator) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null)
@@ -27,7 +29,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("TENANT.ADMIN");
 
-        app.MapGet("companies/{tenantId}", async (HttpContext context, IMediator mediator) =>
+        grp.MapGet("", async (HttpContext context, IMediator mediator) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null)

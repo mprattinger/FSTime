@@ -10,6 +10,7 @@ public static class Extensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IEmployeeRepository, EmployeeRepository>();
         return services;
     }
 }

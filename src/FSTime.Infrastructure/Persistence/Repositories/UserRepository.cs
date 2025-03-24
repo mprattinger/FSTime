@@ -12,7 +12,14 @@ public class UserRepository(FSTimeDbContext context) : IUserRepository
         await context.SaveChangesAsync();
         return user;
     }
-
+    
+    public async Task<User> UpdateUser(User user)
+    {
+        context.Users.Update(user);
+        await context.SaveChangesAsync();
+        return user;
+    }
+    
     public async Task<User?> GetUser(string username)
     {
         return await context.Users.FirstOrDefaultAsync(x => x.UserName == username);
@@ -26,5 +33,10 @@ public class UserRepository(FSTimeDbContext context) : IUserRepository
     public async Task<bool> UserExists(string username)
     {
         return await context.Users.AnyAsync(u => u.UserName == username);
+    }
+
+    public async Task<User?> GetUserByVerificationData(string email, string token)
+    {
+        return await context.Users.FirstOrDefaultAsync(x => x.Email == email && x.VerifyToken == token);
     }
 }

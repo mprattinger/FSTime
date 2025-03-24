@@ -35,7 +35,8 @@ public static class CreateTenant
                 var tenantGuid = Guid.CreateVersion7();
                 var tenant = new Tenant(request.Name, tenantGuid);
                 var role = new TenantRole(tenantGuid, request.UserId, "ADMIN");
-                var result = await tenantRepository.CreateTenant(tenant, role);
+                tenant.AddUser(role);
+                var result = await tenantRepository.CreateTenant(tenant);
                 return result.Id;
             }
             catch (Exception e)

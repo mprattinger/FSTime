@@ -1,4 +1,5 @@
 ﻿using FSTime.Domain.Common;
+using FSTime.Domain.EmployeeAggregate;
 
 namespace FSTime.Domain.UserAggregate;
 
@@ -12,9 +13,16 @@ public class User : AggregateRoot
     
     public string Email { get; } = null!;
 
-    public bool Verified { get; }
+    public bool Verified { get; private set; }
 
-    public User(string name, string password, string email, string salt, Guid? id = null)
+    public string VerifyToken { get; } = null!;
+
+    public DateTime VerifyTokenExpires { get; }
+
+    public Guid? EmployeeId { get; }
+    public Employee? Employee { get; }
+    
+    public User(string name, string password, string email, string salt, string verifyToken, DateTime verifyExpires, Guid? id = null)
     : base(id ?? Guid.CreateVersion7())
     {
         UserName = name;
@@ -22,6 +30,13 @@ public class User : AggregateRoot
         Email = email;
         Salt = salt;
         Verified = false;
+        VerifyToken = verifyToken;
+        VerifyTokenExpires = verifyExpires;
+    }
+    
+    public void SetVerified()
+    {
+        Verified = true;
     }
 
     private User() { }

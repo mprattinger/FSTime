@@ -1,6 +1,7 @@
 ﻿using FSTime.Domain.Common;
 using FSTime.Domain.Common.ValueObjects;
 using FSTime.Domain.CompanyAggregate;
+using FSTime.Domain.UserAggregate;
 
 namespace FSTime.Domain.TenantAggregate;
 
@@ -18,6 +19,22 @@ public class Tenant : AggregateRoot
     {
         Name = name;
     }
+    
+    public void AddUser(TenantRole user)
+    {
+        Users.Add(user);
+    }
 
+    public void UpdateUser(TenantRole user)
+    {
+        Users.RemoveAll(x => x.UserId == user.UserId);
+        Users.Add(user);
+    }
+
+    public void RemoveUser(Guid userId)
+    {
+        Users.RemoveAll(x => x.UserId == userId);
+    }
+    
     private Tenant() { }
 }

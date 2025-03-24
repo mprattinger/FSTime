@@ -1,8 +1,11 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres")
+var dbUser = builder.AddParameter("DbUser", secret: true);
+var dbPassword = builder.AddParameter("DbPassword", secret: true);
+
+var postgres = builder.AddPostgres("postgres", port: 5432)
     .WithDataVolume()
-    .WithPgAdmin(options => options.WithHostPort(5432));
+    .WithPgAdmin(options => options.WithHostPort(5433));
 
 var db = postgres.AddDatabase("fstimedb");
 

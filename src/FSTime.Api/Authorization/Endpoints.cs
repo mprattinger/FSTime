@@ -12,7 +12,9 @@ public class Endpoints : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("auth/login", async (LoginRequest request, IMediator mediator, HttpResponse response) =>
+        var grp = app.MapGroup("auth");
+        
+        grp.MapPost("/login", async (LoginRequest request, IMediator mediator, HttpResponse response) =>
         {
             Guid? tenantId = null;
             if (!string.IsNullOrEmpty(request.TenantId))
@@ -38,7 +40,7 @@ public class Endpoints : IEndpoint
             return Results.Ok(result.Value);
         });
 
-        app.MapGet("auth/refresh", async (HttpContext context, IMediator mediator) =>
+        grp.MapGet("/refresh", async (HttpContext context, IMediator mediator) =>
         {
             if (context.Request.Cookies.TryGetValue(COOKIENAME, out var refreshToken))
             {
@@ -54,7 +56,7 @@ public class Endpoints : IEndpoint
             return Results.Unauthorized();
         });
 
-        app.MapGet("auth/logout", (HttpRequest request, HttpResponse response) =>
+        grp.MapGet("/logout", (HttpRequest request, HttpResponse response) =>
         {
             if (!request.Cookies.Any(x => x.Key == COOKIENAME))
             {

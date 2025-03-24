@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using FluentValidation;
 using FSTime.Application.Common.Interfaces;
+using FSTime.Contracts.Users;
 using FSTime.Domain.UserAggregate;
 using MediatR;
 
@@ -8,7 +9,7 @@ namespace FSTime.Application.Users.Commands;
 
 public static class CreateUser
 {
-    public record Command(string username, string password, string email) : IRequest<ErrorOr<Guid>>;
+    public record Command(string username, string password, string email) : IRequest<ErrorOr<RegisterUserResult>>;
 
     public class Validator : AbstractValidator<Command>
     {
@@ -20,9 +21,9 @@ public static class CreateUser
         }
     }
 
-    internal sealed class Handler(IUserRepository userRepository, IPasswordService passwordService, IValidator<Command> validator) : IRequestHandler<Command, ErrorOr<Guid>>
+    internal sealed class Handler(IUserRepository userRepository, IPasswordService passwordService, IValidator<Command> validator, ITokenService tokenService) : IRequestHandler<Command, ErrorOr<RegisterUserResult>>
     {
-        public async Task<ErrorOr<Guid>> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<RegisterUserResult>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
@@ -38,12 +39,14 @@ public static class CreateUser
                 }
 
                 var pw = passwordService.HashPassword(request.password);
-
-                var user = new User(request.username, pw.password, request.email, pw.salt);
+                var verifyToken = tokenService.GenerateEmailVerificationToken();
+                
+                var user = new User(request.username, pw.password, request.email, pw.salt, verifyToken, DateTime.UtcNow.AddHours(2));
 
                 var res = await userRepository.AddUser(user);
-
-                return res.Id;
+                
+                var ret  = new RegisterUserResult(res.Id, verifyToken, res.Email);
+                return ret;
             }
             catch (Exception ex)
             {

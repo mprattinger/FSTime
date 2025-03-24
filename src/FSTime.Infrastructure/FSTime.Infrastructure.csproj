@@ -23,4 +23,8 @@
     <ProjectReference Include="..\FSTime.Application\FSTime.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Exceptions\" />
+  </ItemGroup>
+
 </Project>

@@ -57,13 +57,15 @@ public static class LoginUser
 
                 //Check if any Tenants
                 var tenants = await tenantRepository.GetTenantsByUserId(user.Id);
-                if (tenants.Count > 0 && request.Tenant is null)
+                if (tenants.Count > 1 && request.Tenant is null)
                 {
-                    return Error.Custom(99, "USER_LOGIN.MULTIPLE_TENANTS", "Dem Benutzer sind mehrere Mandanten zugeordnet.");
+                    var info = new Dictionary<string, object>();
+                    tenants.ForEach(t => info.Add(t.Id.ToString(), t.Name));
+                    return Error.Custom(99, "USER_LOGIN.MULTIPLE_TENANTS", "Dem Benutzer sind mehrere Mandanten zugeordnet.", info);
                 }
 
                 Tenant? tenant = null;
-                if (tenants.Count > 0 && request.Tenant is not null)
+                if (tenants.Count > 1 && request.Tenant is not null)
                 {
                     tenant = tenants.FirstOrDefault(x => x.Id == request.Tenant);
                     if (tenant is null)

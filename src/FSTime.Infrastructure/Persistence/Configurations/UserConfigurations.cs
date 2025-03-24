@@ -16,5 +16,11 @@ internal class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(x => x.Salt);
         builder.Property(x => x.Email);
         builder.Property(x => x.Verified);
+        builder.Property(x => x.VerifyToken);
+        builder.Property(x => x.VerifyTokenExpires);
+        
+        builder.HasOne(x => x.Employee)
+            .WithOne(x => x.User) 
+            .HasForeignKey<User>(x => x.EmployeeId);
     }
 }

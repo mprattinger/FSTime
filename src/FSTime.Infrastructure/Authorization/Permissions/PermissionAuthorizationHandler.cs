@@ -50,7 +50,7 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
             }
             //Für den Tenant, hat der User eine eigene Rolle in der TenantRole Tabelle.
             //In Action steht der Name der Rolle
-            var hasRole = await tenantRepository.UserHasTenantRole(tid!.Value, parsedUserId, action);
+            var hasRole = await tenantRepository.GetUsersTenantRole(tid!.Value, parsedUserId, action);
             if (hasRole)
             {
                 context.Succeed(requirement);

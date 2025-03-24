@@ -15,7 +15,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("tenants", async (CreateTenantRequest request, IMediator mediator, HttpContext context) =>
+        var grp = app.MapGroup("tenants");
+        
+        grp.MapPost("", async (CreateTenantRequest request, IMediator mediator, HttpContext context) =>
         {
             if (context.User.Identity is null)
             {
@@ -41,7 +43,7 @@ public class Endpoints : IEndpoint
                 );
         }).RequireAuthorization();
 
-        app.MapGet("tenants", async (HttpContext context, IMediator mediator) =>
+        grp.MapGet("", async (HttpContext context, IMediator mediator) =>
         {
             if (context.User.Identity is null)
             {
@@ -63,6 +65,32 @@ public class Endpoints : IEndpoint
                 t => Results.Ok(t),
                 err => err.ToProblemDetails()
             );
-        }).RequireAuthorization();;
+        }).RequireAuthorization();
+
+        grp.MapPost("/adduser", async (AssignUserRequest request, IMediator mediator, HttpContext context) =>
+        {
+            if (context.User.Identity is null)
+            {
+                return Results.Unauthorized();
+            }
+            if (!context.User.Identity.IsAuthenticated)
+            {
+                return Results.Unauthorized();
+            }
+
+            var tenantId = context.GetTenantIdFromHttpContext();
+            if(tenantId is null)
+            {
+                return Results.Unauthorized();
+            }
+            
+            var userId = Guid.Parse(request.UserId);
+            
+            var result = await mediator.Send(new AddUserToTenant.Command((Guid)tenantId, userId, request.Role));
+            return result.Match(
+                t => Results.Ok(t),
+                err => err.ToProblemDetails()
+                );
+        }).RequireAuthorization("TENANT.ADMIN");
     }
 }

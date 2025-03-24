@@ -41,6 +41,47 @@ namespace FSTime.Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("FSTime.Domain.EmployeeAggregate.Employee", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("EmployeeCode")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("EntryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsHead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("SupervisorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("WorkplanId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupervisorId");
+
+                    b.ToTable("Employees");
+                });
+
             modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
                 {
                     b.Property<Guid>("Id")
@@ -67,6 +108,9 @@ namespace FSTime.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("EmployeeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
@@ -82,7 +126,17 @@ namespace FSTime.Infrastructure.Migrations
                     b.Property<bool>("Verified")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("VerifyToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("VerifyTokenExpires")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -96,6 +150,15 @@ namespace FSTime.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.EmployeeAggregate.Employee", b =>
+                {
+                    b.HasOne("FSTime.Domain.EmployeeAggregate.Employee", "Supervisor")
+                        .WithMany()
+                        .HasForeignKey("SupervisorId");
+
+                    b.Navigation("Supervisor");
                 });
 
             modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
@@ -121,6 +184,20 @@ namespace FSTime.Infrastructure.Migrations
                         });
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.UserAggregate.User", b =>
+                {
+                    b.HasOne("FSTime.Domain.EmployeeAggregate.Employee", "Employee")
+                        .WithOne("User")
+                        .HasForeignKey("FSTime.Domain.UserAggregate.User", "EmployeeId");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.EmployeeAggregate.Employee", b =>
+                {
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
