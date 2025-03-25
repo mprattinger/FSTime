@@ -46,6 +46,9 @@ namespace FSTime.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("EmployeeCode")
                         .HasColumnType("text");
 
@@ -76,6 +79,8 @@ namespace FSTime.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("SupervisorId");
 
@@ -154,9 +159,17 @@ namespace FSTime.Infrastructure.Migrations
 
             modelBuilder.Entity("FSTime.Domain.EmployeeAggregate.Employee", b =>
                 {
+                    b.HasOne("FSTime.Domain.CompanyAggregate.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FSTime.Domain.EmployeeAggregate.Employee", "Supervisor")
                         .WithMany()
                         .HasForeignKey("SupervisorId");
+
+                    b.Navigation("Company");
 
                     b.Navigation("Supervisor");
                 });

@@ -1,5 +1,6 @@
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Authorization;
+using FSTime.Infrastructure.Common.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,14 +30,15 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
         }
         
         using var scope = serviceScopeFactory.CreateScope();
-        var tenantRepository = scope.ServiceProvider.GetRequiredService<ITenantRepository>();
-        if (tenantRepository is null)
-        {
-            return;
-        }
         
         if (group == "TENANT")
         {
+            var tenantRepository = scope.ServiceProvider.GetRequiredService<ITenantRepository>();
+            if (tenantRepository is null)
+            {
+                return;
+            }
+            
             if (context.Resource is null)
             {
                 return;
@@ -59,6 +61,28 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
             return;
         }
 
+        if (action.Contains(("_SELF")))
+        {
+            switch (group)
+            {
+                case "EMPLOYEE":
+                    var employeeRepo = scope.ServiceProvider.GetRequiredService<IEmployeeRepository>();
+                    if (employeeRepo is null)
+                    {
+                        return;
+                    }
+                    
+                    break;
+            }
+        }
+        
+        var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
+        var permissionResult = await permissionService.HasPermission(parsedUserId, group, action);
+        if (permissionResult)
+        {
+            context.Succeed(requirement);
+        }
+        
         return;
     }
 }

@@ -1,7 +1,8 @@
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
+using FSTime.Application.Employees.Commands;
 using FSTime.Application.Employees.Queries;
-using FSTime.Domain.CompanyAggregate;
+using FSTime.Contracts.Employees;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,16 +22,26 @@ public class Endpoints: IEndpoint
                 emps => Results.Ok(emps),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
-        });
+        }).RequireAuthorization("EMPLOYEE.READ");
         
         grp.MapGet("/{id}", async (Guid id, IMediator mediator) =>
         {
             var result = await mediator.Send(new GetEmployee.Query(id));
 
             return result.Match(
-                emps => Results.Ok(emps),
+                emp => Results.Ok(emp),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
-        });
+        }).RequireAuthorization("EMPLOYEE.READ, EMPLOYEE.READ_SELF");
+
+        grp.MapPost("", async (CreateEmployeeRequest request, [FromQuery]Guid company, IMediator mediator) =>
+        {
+            var result = await mediator.Send(new CreateEmployee.Command(company, request.FirstName, request.LastName, request.MiddleName));
+            
+            return result.Match(
+                emp => Results.Created($"companies/{emp.Id}", emp),
+                error => Results.BadRequest(error.ToProblemDetails())
+            );
+        }).RequireAuthorization("EMPLOYEE.MODIFY");
     }
 }

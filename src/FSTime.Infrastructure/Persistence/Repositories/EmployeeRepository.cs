@@ -12,9 +12,9 @@ public class EmployeeRepository(FSTimeDbContext context) : IEmployeeRepository
         return context.Employees.Where(x => x.CompanyId == companyId).ToListAsync();
     }
 
-    public async Task<Employee?> GetEmployee(Guid companyId, Guid id)
+    public async Task<Employee?> GetEmployee(Guid id)
     {
-        return await context.Employees.FirstOrDefaultAsync(x => x.CompanyId == companyId && x.Id == id);
+        return await context.Employees.FirstOrDefaultAsync(x => x.Id == id);
     }
     
     public async Task<Employee> CreateEmployee(Employee employee)

@@ -18,4 +18,9 @@ public class CompanyRepository(FSTimeDbContext context) : ICompanyRepository
     {
         return await context.Companies.Where(x => x.TenantId == tenantId).ToListAsync();
     }
+
+    public async Task<Company?> GetCompanyById(Guid companyId)
+    {
+        return await context.Companies.FirstOrDefaultAsync(x => x.Id == companyId);
+    }
 }

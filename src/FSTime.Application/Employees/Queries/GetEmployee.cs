@@ -15,7 +15,7 @@ public static class GetEmployee
         {
             try
             {
-                var employee = await employeeRepository.GetEmployeeByUserId(request.EmployeeId);
+                var employee = await employeeRepository.GetEmployee(request.EmployeeId);
 
                 if (employee == null)
                 {

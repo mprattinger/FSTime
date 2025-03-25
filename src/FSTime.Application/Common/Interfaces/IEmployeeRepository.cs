@@ -5,7 +5,7 @@ namespace FSTime.Application.Common.Interfaces;
 public interface IEmployeeRepository
 {
     Task<List<Employee>> GetEmployees(Guid companyId);
-    Task<Employee?> GetEmployee(Guid companyId, Guid id);
+    Task<Employee?> GetEmployee(Guid id);
     Task<Employee> CreateEmployee(Employee employee);
     Task<Employee> UpdateEmployee(Employee employee);
     
