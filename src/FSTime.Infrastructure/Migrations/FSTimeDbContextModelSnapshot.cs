@@ -146,6 +146,48 @@ namespace FSTime.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("FSTime.Domain.WorkScheduleAggregate.WorkSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompanyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<double?>("Friday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Monday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Saturday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Sunday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Thursday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Tuesday")
+                        .HasColumnType("double precision");
+
+                    b.Property<double?>("Wednesday")
+                        .HasColumnType("double precision");
+
+                    b.Property<int?>("WeekWorkDays")
+                        .HasColumnType("integer");
+
+                    b.Property<double?>("WeekWorkTime")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.ToTable("WorkSchedules");
+                });
+
             modelBuilder.Entity("FSTime.Domain.CompanyAggregate.Company", b =>
                 {
                     b.HasOne("FSTime.Domain.TenantAggregate.Tenant", "Tenant")
@@ -206,6 +248,17 @@ namespace FSTime.Infrastructure.Migrations
                         .HasForeignKey("FSTime.Domain.UserAggregate.User", "EmployeeId");
 
                     b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("FSTime.Domain.WorkScheduleAggregate.WorkSchedule", b =>
+                {
+                    b.HasOne("FSTime.Domain.CompanyAggregate.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("FSTime.Domain.EmployeeAggregate.Employee", b =>

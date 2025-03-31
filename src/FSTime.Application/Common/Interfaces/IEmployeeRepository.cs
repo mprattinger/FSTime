@@ -8,12 +8,13 @@ public interface IEmployeeRepository
     Task<Employee?> GetEmployee(Guid id);
     Task<Employee> CreateEmployee(Employee employee);
     Task<Employee> UpdateEmployee(Employee employee);
-    
+
     Task<Employee?> GetEmployeeByUserId(Guid userId);
-    
+
     Task<Employee> AssignUserToEmployee(Guid employeeId, Guid userId);
     Task<Employee> UnassignUser(Guid employeeId);
-    
+
     Task<Employee?> SetSupervisor(Guid employeeId, Guid supervisorId);
     Task<Employee?> SetIsHead(Guid employeeId);
+    Task<Employee?> GetHead();
 }

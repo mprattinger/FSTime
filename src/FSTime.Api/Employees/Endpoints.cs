@@ -8,13 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FSTime.Api.Employees;
 
-public class Endpoints: IEndpoint
+public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var grp = app.MapGroup("employees");
 
-        grp.MapGet("", async ([FromQuery]Guid company, IMediator mediator) =>
+        grp.MapGet("", async ([FromQuery] Guid company, IMediator mediator) =>
         {
             var result = await mediator.Send(new GetAllEmployees.Query(company));
 
@@ -23,7 +23,7 @@ public class Endpoints: IEndpoint
                 error => Results.BadRequest(error.ToProblemDetails())
             );
         }).RequireAuthorization("EMPLOYEE.READ");
-        
+
         grp.MapGet("/{id}", async (Guid id, IMediator mediator) =>
         {
             var result = await mediator.Send(new GetEmployee.Query(id));
@@ -32,12 +32,22 @@ public class Endpoints: IEndpoint
                 emp => Results.Ok(emp),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
-        }).RequireAuthorization("EMPLOYEE.READ, EMPLOYEE.READ_SELF");
+        }).RequireAuthorization("EMPLOYEE.READ_SELF, EMPLOYEE.READ");
 
-        grp.MapPost("", async (CreateEmployeeRequest request, [FromQuery]Guid company, IMediator mediator) =>
+        grp.MapPost("", async (CreateEmployeeRequest request, [FromQuery] Guid company, IMediator mediator) =>
         {
-            var result = await mediator.Send(new CreateEmployee.Command(company, request.FirstName, request.LastName, request.MiddleName));
-            
+            var result = await mediator.Send(new CreateEmployee.Command(company, request.FirstName, request.LastName,
+                request.MiddleName));
+
+            return result.Match(
+                emp => Results.Created($"companies/{emp.Id}", emp),
+                error => Results.BadRequest(error.ToProblemDetails())
+            );
+        }).RequireAuthorization("EMPLOYEE.MODIFY");
+
+        grp.MapPost("/assignUser", async (AssignUserRequest request, IMediator mediator) =>
+        {
+            var result = await mediator.Send(new AssignUserToEmployee.Command(request.EmployeeId, request.UserId));
             return result.Match(
                 emp => Results.Created($"companies/{emp.Id}", emp),
                 error => Results.BadRequest(error.ToProblemDetails())

@@ -18,9 +18,9 @@ internal class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(x => x.Verified);
         builder.Property(x => x.VerifyToken);
         builder.Property(x => x.VerifyTokenExpires);
-        
+
         builder.HasOne(x => x.Employee)
-            .WithOne(x => x.User) 
+            .WithOne(x => x.User)
             .HasForeignKey<User>(x => x.EmployeeId);
     }
 }

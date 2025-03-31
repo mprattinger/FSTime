@@ -1,31 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="ErrorOr" Version="2.0.1" />
-    <PackageReference Include="FluentValidation" Version="11.11.0" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.2" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="ErrorOr" Version="2.0.1"/>
+        <PackageReference Include="FluentValidation" Version="11.11.0"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.11.0"/>
+        <PackageReference Include="MediatR" Version="12.4.1"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.2"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\FSTime.Contracts\FSTime.Contracts.csproj" />
-    <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\FSTime.Contracts\FSTime.Contracts.csproj"/>
+        <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj"/>
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Models\" />
-    <Folder Include="Companies\" />
-    <Folder Include="Users\" />
-    <Folder Include="Tenants\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Common\Models\"/>
+        <Folder Include="Companies\"/>
+        <Folder Include="Tenants\"/>
+    </ItemGroup>
 
 </Project>
