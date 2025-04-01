@@ -3,6 +3,7 @@ using System;
 using FSTime.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSTime.Infrastructure.Migrations
 {
     [DbContext(typeof(FSTimeDbContext))]
-    partial class FSTimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327220344_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,6 +76,9 @@ namespace FSTime.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("WorkplanId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -143,48 +149,6 @@ namespace FSTime.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("FSTime.Domain.WorkScheduleAggregate.WorkSchedule", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<double?>("Friday")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Monday")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Saturday")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Sunday")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Thursday")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Tuesday")
-                        .HasColumnType("double precision");
-
-                    b.Property<double?>("Wednesday")
-                        .HasColumnType("double precision");
-
-                    b.Property<int?>("WeekWorkDays")
-                        .HasColumnType("integer");
-
-                    b.Property<double?>("WeekWorkTime")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("WorkSchedules");
-                });
-
             modelBuilder.Entity("FSTime.Domain.CompanyAggregate.Company", b =>
                 {
                     b.HasOne("FSTime.Domain.TenantAggregate.Tenant", "Tenant")
@@ -208,45 +172,9 @@ namespace FSTime.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SupervisorId");
 
-                    b.OwnsMany("FSTime.Domain.Common.ValueObjects.EmployeeWorkschedule", "Workschedules", b1 =>
-                        {
-                            b1.Property<Guid>("EmployeeId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("WorkscheduleId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<DateTime>("From")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.Property<DateTime?>("To")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.HasKey("EmployeeId", "WorkscheduleId", "From");
-
-                            b1.HasIndex("WorkscheduleId");
-
-                            b1.ToTable("EmployeeWorkschedules", (string)null);
-
-                            b1.WithOwner("Employee")
-                                .HasForeignKey("EmployeeId");
-
-                            b1.HasOne("FSTime.Domain.WorkScheduleAggregate.WorkSchedule", "Workschedule")
-                                .WithMany()
-                                .HasForeignKey("WorkscheduleId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.Navigation("Employee");
-
-                            b1.Navigation("Workschedule");
-                        });
-
                     b.Navigation("Company");
 
                     b.Navigation("Supervisor");
-
-                    b.Navigation("Workschedules");
                 });
 
             modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>
@@ -281,17 +209,6 @@ namespace FSTime.Infrastructure.Migrations
                         .HasForeignKey("FSTime.Domain.UserAggregate.User", "EmployeeId");
 
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("FSTime.Domain.WorkScheduleAggregate.WorkSchedule", b =>
-                {
-                    b.HasOne("FSTime.Domain.CompanyAggregate.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("FSTime.Domain.EmployeeAggregate.Employee", b =>

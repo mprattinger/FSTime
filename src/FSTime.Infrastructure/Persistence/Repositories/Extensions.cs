@@ -11,6 +11,7 @@ public static class Extensions
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        services.AddScoped<IWorkScheduleRepository, WorkScheduleRepository>();
         return services;
     }
 }

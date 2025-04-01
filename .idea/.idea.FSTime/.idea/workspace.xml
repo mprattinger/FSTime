@@ -11,43 +11,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b24e44-67fc-4acb-8bd5-68414dfde9d2" name="Changes" comment="Creation of employee working&#10;get by id working too">
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Api/Workschedules/Endpoints.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/IWorkScheduleRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/AssignUserToEmployee.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/SetEntryDate.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/SetHead.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/SetSupervisor.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Extensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Users/Extensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Workschedules/Commands/CreateDailyWorkschedule.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Workschedules/Commands/CreateWeekWorkschedule.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Workschedules/Queries/GetWorkschedule.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Workschedules/Queries/GetWorkschedules.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Workschedules/WorkscheduleErrors.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/AssignUserRequest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/EmployeeResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Users/UserResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Domain/WorkScheduleAggregate/WorkSchedule.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/WorkScheduleRepository.cs" afterDir="false" />
+    <list default="true" id="36b24e44-67fc-4acb-8bd5-68414dfde9d2" name="Changes" comment="adding basics of workschedule">
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Domain/Common/ValueObjects/EmployeeWorkschedule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FSTime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FSTime/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Api/Employees/Endpoints.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Api/Employees/Endpoints.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/IEmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/IEmployeeRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/CreateEmployee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/CreateEmployee.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/EmployeeErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/EmployeeErrors.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/Queries/GetAllEmployees.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Queries/GetAllEmployees.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/Queries/GetEmployee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Queries/GetEmployee.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/FSTime.Application.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/FSTime.Application.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/CreateEmployeeRequest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/CreateEmployeeRequest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Contracts/FSTime.Contracts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Contracts/FSTime.Contracts.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FSTime.Domain/EmployeeAggregate/Employee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Domain/EmployeeAggregate/Employee.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/PermissionAuthorizationHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/PermissionAuthorizationHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Migrations/FSTimeDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Migrations/FSTimeDbContextModelSnapshot.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/EmployeeConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/EmployeeConfiguration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/UserConfigurations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/UserConfigurations.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/WorkScheduleConfigurations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/WorkScheduleConfigurations.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/FSTimeDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/FSTimeDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/EmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/EmployeeRepository.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -269,7 +237,7 @@
       <workItem from="1741813639024" duration="5881000" />
       <workItem from="1741991379664" duration="188000" />
       <workItem from="1741991570729" duration="27756000" />
-      <workItem from="1742596671323" duration="34629000" />
+      <workItem from="1742596671323" duration="38961000" />
     </task>
     <task id="LOCAL-00001" summary="working on tenants">
       <option name="closed" value="true" />
@@ -327,7 +295,15 @@
       <option name="project" value="LOCAL" />
       <updated>1742940121806</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="adding basics of workschedule">
+      <option name="closed" value="true" />
+      <created>1743454016463</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1743454016463</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -355,7 +331,8 @@
     <MESSAGE value="make everything running in aspire. Testing creation of user and tenants" />
     <MESSAGE value="working on employees" />
     <MESSAGE value="Creation of employee working&#10;get by id working too" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creation of employee working&#10;get by id working too" />
+    <MESSAGE value="adding basics of workschedule" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding basics of workschedule" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

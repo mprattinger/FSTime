@@ -1,0 +1,8 @@
+{
+  "type": "https://tools.ietf.org/html/rfc9110#section-15.6.1",
+  "title": "Server error",
+  "status": 500,
+  "GLOBAL": [
+    "Server error"
+  ]
+}

@@ -3,6 +3,7 @@ using System;
 using FSTime.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSTime.Infrastructure.Migrations
 {
     [DbContext(typeof(FSTimeDbContext))]
-    partial class FSTimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250328233137_WorkSchedule")]
+    partial class WorkSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,6 +76,9 @@ namespace FSTime.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("WorkplanId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -208,45 +214,9 @@ namespace FSTime.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("SupervisorId");
 
-                    b.OwnsMany("FSTime.Domain.Common.ValueObjects.EmployeeWorkschedule", "Workschedules", b1 =>
-                        {
-                            b1.Property<Guid>("EmployeeId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<Guid>("WorkscheduleId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<DateTime>("From")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.Property<DateTime?>("To")
-                                .HasColumnType("timestamp with time zone");
-
-                            b1.HasKey("EmployeeId", "WorkscheduleId", "From");
-
-                            b1.HasIndex("WorkscheduleId");
-
-                            b1.ToTable("EmployeeWorkschedules", (string)null);
-
-                            b1.WithOwner("Employee")
-                                .HasForeignKey("EmployeeId");
-
-                            b1.HasOne("FSTime.Domain.WorkScheduleAggregate.WorkSchedule", "Workschedule")
-                                .WithMany()
-                                .HasForeignKey("WorkscheduleId")
-                                .OnDelete(DeleteBehavior.Cascade)
-                                .IsRequired();
-
-                            b1.Navigation("Employee");
-
-                            b1.Navigation("Workschedule");
-                        });
-
                     b.Navigation("Company");
 
                     b.Navigation("Supervisor");
-
-                    b.Navigation("Workschedules");
                 });
 
             modelBuilder.Entity("FSTime.Domain.TenantAggregate.Tenant", b =>

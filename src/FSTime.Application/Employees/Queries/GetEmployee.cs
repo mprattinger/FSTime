@@ -30,7 +30,6 @@ public static class GetEmployee
                     MiddleName = employee.MiddleName,
                     EmployeeCode = employee.EmployeeCode,
                     EntryDate = employee.EntryDate,
-                    WorkplanId = employee.WorkplanId,
                     User = employee.User != null
                         ? new UserResponse
                         {
@@ -50,7 +49,6 @@ public static class GetEmployee
                             MiddleName = employee.Supervisor.MiddleName,
                             EmployeeCode = employee.Supervisor.EmployeeCode,
                             EntryDate = employee.Supervisor.EntryDate,
-                            WorkplanId = employee.Supervisor.WorkplanId,
                             IsHead = employee.Supervisor.IsHead
                         }
                         : null,

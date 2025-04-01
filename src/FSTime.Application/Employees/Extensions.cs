@@ -17,7 +17,6 @@ public static class Extensions
             MiddleName = employee.MiddleName,
             EmployeeCode = employee.EmployeeCode,
             EntryDate = employee.EntryDate,
-            WorkplanId = employee.WorkplanId,
             User = employee.User?.ToUserResponse(),
             Supervisor = employee.Supervisor?.ToEmployeeResponse(),
             IsHead = employee.IsHead

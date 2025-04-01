@@ -1,4 +1,5 @@
 using FSTime.Domain.Common;
+using FSTime.Domain.Common.ValueObjects;
 using FSTime.Domain.CompanyAggregate;
 using FSTime.Domain.UserAggregate;
 
@@ -77,8 +78,6 @@ public class Employee : AggregateRoot
 
     public DateTime? EntryDate { get; private set; }
 
-    public Guid? WorkplanId { get; private set; }
-
     public Guid? UserId { get; private set; }
     public User? User { get; private set; }
 
@@ -86,11 +85,13 @@ public class Employee : AggregateRoot
     public Guid? SupervisorId { get; private set; }
     public Employee? Supervisor { get; private set; }
 
+    public List<EmployeeWorkschedule> Workschedules { get; } = [];
+
     public bool IsActive
     {
         get
         {
-            if (EntryDate is null || WorkplanId is null) return false;
+            if (EntryDate is null || GetActiveWorkschedule() is null) return false;
 
             if (SupervisorId is null && IsHead == false) return false;
 
@@ -129,8 +130,19 @@ public class Employee : AggregateRoot
         SupervisorId = null;
     }
 
-    public void SetWorkplanId(Guid workplanId)
+    public EmployeeWorkschedule? GetActiveWorkschedule()
     {
-        WorkplanId = workplanId;
+        return Workschedules
+            .FirstOrDefault(x => x.From <= DateTime.UtcNow && (x.To is null || x.To > DateTime.UtcNow));
     }
+
+    public void AddWorkplan(EmployeeWorkschedule workschedule)
+    {
+        Workschedules.Add(workschedule);
+    }
+
+    // public void SetWorkplanId(Guid workplanId)
+    // {
+    //     WorkplanId = workplanId;
+    // }
 }
