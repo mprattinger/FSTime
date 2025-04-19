@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSTime.Contracts", "src\FST
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSTime.Domain", "src\FSTime.Domain\FSTime.Domain.csproj", "{84C87794-9EFB-474B-8055-C13E28373C59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureTests", "InfrastructureTests\InfrastructureTests.csproj", "{45148BE1-7003-461C-B5DB-765D793E8775}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfrastructureTests", "src\InfrastructureTests\InfrastructureTests.csproj", "{45148BE1-7003-461C-B5DB-765D793E8775}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FSTime.Services.DatabaseMigration", "src\FSTime.Services.DatabaseMigration\FSTime.Services.DatabaseMigration.csproj", "{BF7D9628-2A09-46CD-A180-B34FF53BDBBE}"
 EndProject

@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\FSTime.Infrastructure\FSTime.Infrastructure.csproj" />
+      <ProjectReference Include="..\FSTime.Infrastructure\FSTime.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
