@@ -1,5 +1,6 @@
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
+using FSTime.Application.Common;
 using FSTime.Application.Employees.Commands;
 using FSTime.Application.Employees.Queries;
 using FSTime.Contracts.Employees;
@@ -45,11 +46,27 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("EMPLOYEE.MODIFY");
 
-        grp.MapPost("/assignUser", async (AssignUserRequest request, IMediator mediator) =>
+        grp.MapPost("/assignUser", async (AssignUserRequest request, HttpContext context, IMediator mediator) =>
         {
-            var result = await mediator.Send(new AssignUserToEmployee.Command(request.EmployeeId, request.UserId));
+            var tenantId = context.GetTenantIdFromHttpContext();
+            if (tenantId is null) return Results.Unauthorized();
+
+            var result =
+                await mediator.Send(
+                    new AssignUserToEmployee.Command(request.EmployeeId, request.UserId, (Guid)tenantId));
             return result.Match(
-                emp => Results.Created($"companies/{emp.Id}", emp),
+                emp => Results.Ok(emp),
+                error => Results.BadRequest(error.ToProblemDetails())
+            );
+        }).RequireAuthorization("EMPLOYEE.MODIFY");
+
+        grp.MapPost("/addworkschedule", async (AddWorkscheduleRequest request, IMediator mediator) =>
+        {
+            var result = await mediator.Send(new AddWorkschedule.Command(request.EmployeeId, request.WorkscheduleId,
+                request.ValidFrom.ToDateTime(TimeOnly.MinValue).ToUniversalTime()));
+
+            return result.Match(
+                emp => Results.Ok(emp),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
         }).RequireAuthorization("EMPLOYEE.MODIFY");

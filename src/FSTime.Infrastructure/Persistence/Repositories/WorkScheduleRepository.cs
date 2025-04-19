@@ -8,12 +8,17 @@ public class WorkScheduleRepository(FSTimeDbContext context) : IWorkScheduleRepo
 {
     public Task<List<WorkSchedule>> GetAll(Guid companyId)
     {
-        return context.WorkSchedules.Where(x => x.CompanyId == companyId).ToListAsync();
+        return context
+            .WorkSchedules
+            .Include(x => x.Company)
+            .Where(x => x.CompanyId == companyId).ToListAsync();
     }
 
     public async Task<WorkSchedule?> Get(Guid id)
     {
-        return await context.WorkSchedules.FindAsync(id);
+        return await context.WorkSchedules
+            .Include(x => x.Company)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<WorkSchedule> Create(WorkSchedule workSchedule)

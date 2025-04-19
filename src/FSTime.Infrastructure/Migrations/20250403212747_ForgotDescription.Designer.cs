@@ -3,6 +3,7 @@ using System;
 using FSTime.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FSTime.Infrastructure.Migrations
 {
     [DbContext(typeof(FSTimeDbContext))]
-    partial class FSTimeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403212747_ForgotDescription")]
+    partial class ForgotDescription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,33 +24,6 @@ namespace FSTime.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("FSTime.Domain.AuthorizationAggregate.Permission", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Action")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Group")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TenantId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Permissions");
-                });
 
             modelBuilder.Entity("FSTime.Domain.CompanyAggregate.Company", b =>
                 {
@@ -208,25 +184,6 @@ namespace FSTime.Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.ToTable("WorkSchedules");
-                });
-
-            modelBuilder.Entity("FSTime.Domain.AuthorizationAggregate.Permission", b =>
-                {
-                    b.HasOne("FSTime.Domain.TenantAggregate.Tenant", "Tenant")
-                        .WithMany()
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FSTime.Domain.UserAggregate.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Tenant");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FSTime.Domain.CompanyAggregate.Company", b =>

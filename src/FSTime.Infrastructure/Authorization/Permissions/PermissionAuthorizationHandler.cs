@@ -1,6 +1,6 @@
+using FSTime.Application.Common;
 using FSTime.Application.Common.Interfaces;
-using FSTime.Contracts.Authorization;
-using FSTime.Infrastructure.Common.Interfaces;
+using FSTime.Domain.AuthorizationAggregate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +16,9 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
         var userId = context.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
 
         if (!Guid.TryParse(userId, out var parsedUserId)) return;
+
+        var tenantId = context.GetTenantIdFromAuthContext();
+        if (tenantId is null) return;
 
         //Lets check if there are multiple requirements
         var requirements = new List<string>();
@@ -57,7 +60,7 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
                 if (tid is null) continue;
                 //Für den Tenant, hat der User eine eigene Rolle in der TenantRole Tabelle.
                 //In Action steht der Name der Rolle
-                var hasRole = await tenantRepository.GetUsersTenantRole(tid!.Value, parsedUserId, action);
+                var hasRole = await tenantRepository.TenantUserHasRole(tid!.Value, parsedUserId, action);
                 if (hasRole)
                 {
                     context.Succeed(requirement);
@@ -90,8 +93,14 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
                         break;
                 }
 
-            var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
-            var permissionResult = await permissionService.HasPermission(parsedUserId, group, action);
+            var actionEnum = PermissionAction.Unknown;
+            if (!string.IsNullOrEmpty(action))
+                if (Enum.TryParse(action, true, out actionEnum) == false)
+                    return;
+
+            var permissionService = scope.ServiceProvider.GetRequiredService<IPermissionRepository>();
+            var permissionResult = await permissionService.HasPermission(tenantId.Value, parsedUserId, group,
+                actionEnum == PermissionAction.Unknown ? null : actionEnum);
             if (permissionResult) context.Succeed(requirement);
         }
     }

@@ -27,4 +27,10 @@
         <Folder Include="Tenants\"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Reference Include="Microsoft.AspNetCore.Authorization">
+            <HintPath>..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.0\Microsoft.AspNetCore.Authorization.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
 </Project>

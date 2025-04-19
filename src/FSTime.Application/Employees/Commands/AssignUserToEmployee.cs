@@ -7,15 +7,22 @@ namespace FSTime.Application.Employees.Commands;
 
 public static class AssignUserToEmployee
 {
-    public record Command(Guid EmployeeId, Guid UserId) : IRequest<ErrorOr<EmployeeResponse>>;
+    public record Command(Guid EmployeeId, Guid UserId, Guid TenantId) : IRequest<ErrorOr<EmployeeResponse>>;
 
-    internal sealed class Handler(IEmployeeRepository employeeRepository, IUserRepository userRepository)
+    internal sealed class Handler(
+        IEmployeeRepository employeeRepository,
+        IUserRepository userRepository,
+        ITenantRepository tenantRepository)
         : IRequestHandler<Command, ErrorOr<EmployeeResponse>>
     {
         public async Task<ErrorOr<EmployeeResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
             try
             {
+                //User must be in the current tenant
+                if (!await tenantRepository.IsTenantUser(request.TenantId, request.UserId))
+                    return EmployeeErrors.EmployeeNotInTenant(request.UserId);
+
                 var employee = await employeeRepository.GetEmployee(request.EmployeeId);
                 if (employee == null) return EmployeeErrors.Get_Employee_NotFound(request.EmployeeId);
 

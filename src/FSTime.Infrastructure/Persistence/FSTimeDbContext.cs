@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FSTime.Domain.AuthorizationAggregate;
 using FSTime.Domain.CompanyAggregate;
 using FSTime.Domain.EmployeeAggregate;
 using FSTime.Domain.TenantAggregate;
@@ -19,6 +20,7 @@ public class FSTimeDbContext : DbContext
     public DbSet<Company> Companies { get; set; }
     public DbSet<Employee> Employees { get; set; }
     public DbSet<WorkSchedule> WorkSchedules => Set<WorkSchedule>();
+    public DbSet<Permission> Permissions => Set<Permission>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

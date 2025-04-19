@@ -11,11 +11,42 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36b24e44-67fc-4acb-8bd5-68414dfde9d2" name="Changes" comment="adding basics of workschedule">
-      <change afterPath="$PROJECT_DIR$/src/FSTime.Domain/Common/ValueObjects/EmployeeWorkschedule.cs" afterDir="false" />
+    <list default="true" id="36b24e44-67fc-4acb-8bd5-68414dfde9d2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Authorization/Queries/MyPermissions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/AddWorkschedule.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Application/Workschedules/Extensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Common/Exceptions/Workschedule/WorkscheduleNotFoundException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/AddWorkscheduleRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/WorkSchedule/DailyWorkscheduleRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/WorkSchedule/EmployeeWorkscheduleResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Contracts/WorkSchedule/WeeklyWorkscheduleRequest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Domain/AuthorizationAggregate/Permission.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/PermissionConfigurations.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.FSTime/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.FSTime/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Api/Employees/Endpoints.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Api/Employees/Endpoints.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Api/Workschedules/Endpoints.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Api/Workschedules/Endpoints.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/IEmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/IEmployeeRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/ITenantRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/ITenantRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/AssignUserToEmployee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/AssignUserToEmployee.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/EmployeeErrors.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/EmployeeErrors.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Application/Employees/Queries/GetAllEmployees.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Queries/GetAllEmployees.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/EmployeeResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Contracts/Employees/EmployeeResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Contracts/FSTime.Contracts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Contracts/FSTime.Contracts.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Domain/Common/ValueObjects/EmployeeWorkschedule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Domain/Common/ValueObjects/EmployeeWorkschedule.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/FSTime.Domain/EmployeeAggregate/Employee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Domain/EmployeeAggregate/Employee.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/EmployeeConfiguration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/EmployeeConfiguration.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Domain/WorkScheduleAggregate/WorkSchedule.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Domain/WorkScheduleAggregate/WorkSchedule.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/PermissionAuthorizationHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/PermissionAuthorizationHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/PermissionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Authorization/Permissions/PermissionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Common/Interfaces/IPermissionService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Application/Common/Interfaces/IPermissionService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/FSTime.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/FSTime.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Migrations/FSTimeDbContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Migrations/FSTimeDbContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/WorkScheduleConfigurations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Configurations/WorkScheduleConfigurations.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/FSTimeDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/FSTimeDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/EmployeeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/EmployeeRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/TenantRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/TenantRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/WorkScheduleRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/src/FSTime.Infrastructure/Persistence/Repositories/WorkScheduleRepository.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +81,11 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1c3f7d5c03bf77051eb8a758fb3549c4e2d4cb3dc6f6d567a94a315044961e/List.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/271b8d2d9d94e13a469269f46758864f64ad438c3174f74d4a591af6410e96b/Future.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2a5ac8b3deb7fa8da61132ce8415e898163ec08a2380d0b7308cebc9bf6a/PostgresBuilderExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/435e33f714ea13f9b99b88b164c6d0b91fd8b28f78435bddc31db2cb2981e2de/ToCollection.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/46e849375f3e8fcb25f51d7367c4f2e3c07bef61f5f208617124579d3afc5a/Select.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4b145ae2c3f9a0568b79fb9dbbad66cb088e694a46e2ff6c4afd542b46a738f/PasswordHasherOptions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4d1da2c793674ee4dba416412d8c45aea39612837b0f17dce93bb822127ce6f/DateOnly.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5ef9e37e2f99ef2688a1586afed1cff6eef912a11aa9b20a56943a255a6e6b/RuntimeHelpers.CoreCLR.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/62c944bd1ce5cdba36749b2bb2c97e8763ad8a838ecacc9646a9e6c98a7e6c22/Task.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6728f66657329080f0f419df519283a455cdca7d2617a05b18553b02da52fa/Nullable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/68b06b8592b1287fd78f3ee68566d6a38d6e2f45b9a9e6ebd4d0e9972f7c29/Object.cs" root0="FORCE_HIGHLIGHTING" />
@@ -66,6 +101,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f4bc324a395d24ed12db75b0a81536b642509aa14825bf114d9b7c934e2b/Mediator.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f51bb85dff27841839d69724c7524901cc897dafafe61e611f7a7460e327c/ConcurrentDictionary.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/AppHost/Program.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Users/mprattinger/dev/cs/FSTime/src/FSTime.Domain/EmployeeAggregate/Employee.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file:///usr/local/share/dotnet/sdk/9.0.101/Microsoft.Common.CurrentVersion.targets" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -84,31 +120,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.FSTime.Api: http.executor": "Debug",
-    "5be74aff-0e69-4fa8-ae88-c5b8a95ae81e.executor": "Debug",
-    "Aspire Host.AppHost: https.executor": "Debug",
-    "Aspire Host.Https.executor": "Debug",
-    "HTTP Request.All in Auth.executor": "Run",
-    "HTTP Request.All in Users.executor": "Run",
-    "HTTP Request.Auth | #1.executor": "Run",
-    "HTTP Request.Tenants | #1.executor": "Run",
-    "HTTP Request.Tenants | #2.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "rider.code.cleanup.on.save": "true",
-    "settings.editor.selected.configurable": "actions.on.save",
-    "settings.editor.splitter.proportion": "0.3058104",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.FSTime.Api: http.executor&quot;: &quot;Debug&quot;,
+    &quot;5be74aff-0e69-4fa8-ae88-c5b8a95ae81e.executor&quot;: &quot;Debug&quot;,
+    &quot;Aspire Host.AppHost: https.executor&quot;: &quot;Debug&quot;,
+    &quot;Aspire Host.Https.executor&quot;: &quot;Debug&quot;,
+    &quot;HTTP Request.All in Auth.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.All in Users.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.Auth | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.Tenants | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.Tenants | #2.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;rider.code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;settings.editor.splitter.proportion&quot;: &quot;0.3058104&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Aspire Host.Https">
     <configuration name="AppHost: http" type="AspireHostConfiguration" factoryName="Aspire Host" activateToolWindowBeforeRun="false">
       <option name="PROJECT_FILE_PATH" value="$PROJECT_DIR$/src/AppHost/AppHost.csproj" />
@@ -237,7 +273,8 @@
       <workItem from="1741813639024" duration="5881000" />
       <workItem from="1741991379664" duration="188000" />
       <workItem from="1741991570729" duration="27756000" />
-      <workItem from="1742596671323" duration="38961000" />
+      <workItem from="1742596671323" duration="50764000" />
+      <workItem from="1744138503583" duration="6387000" />
     </task>
     <task id="LOCAL-00001" summary="working on tenants">
       <option name="closed" value="true" />
@@ -303,7 +340,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743454016463</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="adding the workschedule to employee link">
+      <option name="closed" value="true" />
+      <created>1743543351082</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1743543351082</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -332,7 +377,8 @@
     <MESSAGE value="working on employees" />
     <MESSAGE value="Creation of employee working&#10;get by id working too" />
     <MESSAGE value="adding basics of workschedule" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding basics of workschedule" />
+    <MESSAGE value="adding the workschedule to employee link" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding the workschedule to employee link" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -351,19 +397,6 @@
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/src/FSTime.Application/Tenants/Commands/CreateTenant.cs</url>
-          <line>34</line>
-          <properties documentPath="$PROJECT_DIR$/src/FSTime.Application/Tenants/Commands/CreateTenant.cs" containingFunctionPresentation="Method 'Handle'">
-            <startOffsets>
-              <option value="1163" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1202" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/src/FSTime.Api/Tenants/Endpoints.cs</url>
           <line>71</line>
           <properties documentPath="$PROJECT_DIR$/src/FSTime.Api/Tenants/Endpoints.cs" containingFunctionPresentation="Lambda expression inside Method 'MapEndpoint'">
@@ -375,6 +408,32 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/src/FSTime.Api/Employees/Endpoints.cs</url>
+          <line>62</line>
+          <properties documentPath="$PROJECT_DIR$/src/FSTime.Api/Employees/Endpoints.cs" containingFunctionPresentation="Lambda expression inside Method 'MapEndpoint'">
+            <startOffsets>
+              <option value="2430" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2619" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/AddWorkschedule.cs</url>
+          <line>19</line>
+          <properties documentPath="$PROJECT_DIR$/src/FSTime.Application/Employees/Commands/AddWorkschedule.cs" containingFunctionPresentation="Method 'Handle'">
+            <startOffsets>
+              <option value="641" />
+            </startOffsets>
+            <endOffsets>
+              <option value="780" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="48" />
         </line-breakpoint>
         <breakpoint enabled="true" type="DotNet Exception Breakpoints">
           <properties exception="System.AggregateException" isInternal="false" displayValue="AggregateException" namespaceName="System">

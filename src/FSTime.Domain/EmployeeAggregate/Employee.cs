@@ -136,13 +136,11 @@ public class Employee : AggregateRoot
             .FirstOrDefault(x => x.From <= DateTime.UtcNow && (x.To is null || x.To > DateTime.UtcNow));
     }
 
-    public void AddWorkplan(EmployeeWorkschedule workschedule)
+    public void AddWorkschedule(EmployeeWorkschedule workschedule)
     {
+        //First set the old workschedule to inactive
+        var old = Workschedules.FirstOrDefault(x => x.To is null);
+        if (old is not null) old.SetTo(workschedule.From.AddDays(-1));
         Workschedules.Add(workschedule);
     }
-
-    // public void SetWorkplanId(Guid workplanId)
-    // {
-    //     WorkplanId = workplanId;
-    // }
 }

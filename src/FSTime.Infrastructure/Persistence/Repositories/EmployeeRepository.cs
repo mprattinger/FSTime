@@ -1,5 +1,7 @@
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Common.Exceptions.Employees;
+using FSTime.Contracts.Common.Exceptions.Workschedule;
+using FSTime.Domain.Common.ValueObjects;
 using FSTime.Domain.EmployeeAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,14 +11,22 @@ public class EmployeeRepository(FSTimeDbContext context) : IEmployeeRepository
 {
     public Task<List<Employee>> GetEmployees(Guid companyId)
     {
-        return context.Employees.Where(x => x.CompanyId == companyId).ToListAsync();
+        return context
+            .Employees
+            .Include(x => x.User)
+            .Include(x => x.Workschedules)
+            .ThenInclude(x => x.Workschedule)
+            .Where(x => x.CompanyId == companyId).ToListAsync();
     }
 
     public async Task<Employee?> GetEmployee(Guid id)
     {
         return await context
             .Employees
-            .FindAsync(id);
+            .Include(x => x.User)
+            .Include(x => x.Workschedules)
+            .ThenInclude(x => x.Workschedule)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<Employee> CreateEmployee(Employee employee)
@@ -88,5 +98,21 @@ public class EmployeeRepository(FSTimeDbContext context) : IEmployeeRepository
     public async Task<Employee?> GetHead()
     {
         return await context.Employees.FirstOrDefaultAsync(x => x.IsHead);
+    }
+
+    public async Task<Employee> AddWorkschedule(Guid employeeId, Guid workscheduleId, DateTime validFrom)
+    {
+        var employee = await context.Employees.FindAsync(employeeId);
+        if (employee == null) throw new EmployeeNotFoundException(employeeId);
+
+        var workschedule = await context.WorkSchedules.FindAsync(workscheduleId);
+        if (workschedule is null) throw new WorkscheduleNotFoundException(workscheduleId);
+
+        var link = new EmployeeWorkschedule(employeeId, workscheduleId, validFrom);
+        employee.AddWorkschedule(link);
+        context.Employees.Update(employee);
+        await context.SaveChangesAsync();
+
+        return employee;
     }
 }

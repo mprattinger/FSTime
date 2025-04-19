@@ -17,4 +17,6 @@ public interface IEmployeeRepository
     Task<Employee?> SetSupervisor(Guid employeeId, Guid supervisorId);
     Task<Employee?> SetIsHead(Guid employeeId);
     Task<Employee?> GetHead();
+
+    Task<Employee> AddWorkschedule(Guid employeeId, Guid workscheduleId, DateTime validFrom);
 }

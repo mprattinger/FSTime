@@ -1,7 +1,6 @@
 using ErrorOr;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Employees;
-using FSTime.Contracts.Users;
 using MediatR;
 
 namespace FSTime.Application.Employees.Queries;
@@ -19,45 +18,48 @@ public static class GetAllEmployees
             {
                 var employees = await employeeRepository.GetEmployees(request.companyId);
 
-                var ret = employees.Select(x =>
-                {
-                    var employeeResponse = new EmployeeResponse
-                    {
-                        Id = x.Id,
-                        CompanyId = x.CompanyId,
-                        FirstName = x.FirstName,
-                        LastName = x.LastName,
-                        MiddleName = x.MiddleName,
-                        EmployeeCode = x.EmployeeCode,
-                        EntryDate = x.EntryDate,
-                        User = x.User != null
-                            ? new UserResponse
-                            {
-                                Id = x.User.Id,
-                                UserName = x.User.UserName,
-                                Email = x.User.Email,
-                                Verified = x.User.Verified
-                            }
-                            : null,
-                        Supervisor = x.Supervisor != null
-                            ? new EmployeeResponse
-                            {
-                                Id = x.Supervisor.Id,
-                                CompanyId = x.Supervisor.CompanyId,
-                                FirstName = x.Supervisor.FirstName,
-                                LastName = x.Supervisor.LastName,
-                                MiddleName = x.Supervisor.MiddleName,
-                                EmployeeCode = x.Supervisor.EmployeeCode,
-                                EntryDate = x.Supervisor.EntryDate,
-                                IsHead = x.Supervisor.IsHead
-                            }
-                            : null,
-                        IsHead = x.IsHead
-                    };
-                    return employeeResponse;
-                }).ToList();
+                // var ret = employees.Select(x =>
+                // {
+                //     var employeeResponse = new EmployeeResponse
+                //     {
+                //         Id = x.Id,
+                //         CompanyId = x.CompanyId,
+                //         FirstName = x.FirstName,
+                //         LastName = x.LastName,
+                //         MiddleName = x.MiddleName,
+                //         EmployeeCode = x.EmployeeCode,
+                //         EntryDate = x.EntryDate,
+                //         User = x.User != null
+                //             ? new UserResponse
+                //             {
+                //                 Id = x.User.Id,
+                //                 UserName = x.User.UserName,
+                //                 Email = x.User.Email,
+                //                 Verified = x.User.Verified
+                //             }
+                //             : null,
+                //         Supervisor = x.Supervisor != null
+                //             ? new EmployeeResponse
+                //             {
+                //                 Id = x.Supervisor.Id,
+                //                 CompanyId = x.Supervisor.CompanyId,
+                //                 FirstName = x.Supervisor.FirstName,
+                //                 LastName = x.Supervisor.LastName,
+                //                 MiddleName = x.Supervisor.MiddleName,
+                //                 EmployeeCode = x.Supervisor.EmployeeCode,
+                //                 EntryDate = x.Supervisor.EntryDate,
+                //                 IsHead = x.Supervisor.IsHead
+                //             }
+                //             : null,
+                //         IsHead = x.IsHead
+                //     };
 
-                return ret;
+                var employeesList = employees.Select(x => x.ToEmployeeResponse()).ToList();
+
+                return employeesList;
+                // }).ToList();
+
+                // return ret;
             }
             catch (Exception e)
             {

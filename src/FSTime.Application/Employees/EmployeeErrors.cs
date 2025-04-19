@@ -75,4 +75,16 @@ public static class EmployeeErrors
         return Error.Conflict("EMPLOYEE_HANDLER.COMMAND.SET_ENTRY_DATE.GEN_ERROR",
             $"Error setting entry date to employee: {error}");
     }
+
+    public static Error AddWorkschedule(string error)
+    {
+        return Error.Conflict("EMPLOYEE_HANDLER.COMMAND.ADD_WORKSCHEDULE.GEN_ERROR",
+            $"Error setting workschedule to employee: {error}");
+    }
+
+    public static Error EmployeeNotInTenant(Guid employeeId)
+    {
+        return Error.NotFound("EMPLOYEE_HANDLER.COMMAND.ASSIGN_USER.EMPLOYEE_NOT_IN_TENANT",
+            $"Employee {employeeId} not in tenant");
+    }
 }

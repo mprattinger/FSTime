@@ -10,25 +10,35 @@ public class WorkSchedule : AggregateRoot
     {
         CompanyId = companyId;
         Description = description;
-        WeekWorkTime = weekWorkTime;
-        WeekWorkDays = weekWorkDays;
-    }
 
-    // public WorkSchedule(Guid companyId, string description, double? monday = null, double? tuesday = null,
-    //     double? wednesday = null,
-    //     double? thursday = null, double? friday = null, double? saturday = null, double? sunday = null, Guid? id = null)
-    //     : base(id ?? Guid.CreateVersion7())
-    // {
-    //     CompanyId = companyId;
-    //     Description = description;
-    //     Monday = monday;
-    //     Tuesday = tuesday;
-    //     Wednesday = wednesday;
-    //     Thursday = thursday;
-    //     Friday = friday;
-    //     Saturday = saturday;
-    //     Sunday = sunday;
-    // }
+        var timePerDay = weekWorkTime / weekWorkDays;
+
+        for (var i = 0; i < weekWorkDays; i++)
+            switch (i)
+            {
+                case 0:
+                    Monday = timePerDay;
+                    break;
+                case 1:
+                    Tuesday = timePerDay;
+                    break;
+                case 2:
+                    Wednesday = timePerDay;
+                    break;
+                case 3:
+                    Thursday = timePerDay;
+                    break;
+                case 4:
+                    Friday = timePerDay;
+                    break;
+                case 5:
+                    Saturday = timePerDay;
+                    break;
+                case 6:
+                    Sunday = timePerDay;
+                    break;
+            }
+    }
 
     public WorkSchedule(Guid companyId, string description, Guid? id = null)
         : base(id ?? Guid.CreateVersion7())
@@ -45,9 +55,6 @@ public class WorkSchedule : AggregateRoot
     public Company? Company { get; } = null!;
 
     public string Description { get; } = null!;
-
-    public double? WeekWorkTime { get; private set; }
-    public int? WeekWorkDays { get; private set; }
 
     public double? Monday { get; private set; }
     public double? Tuesday { get; private set; }

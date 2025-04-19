@@ -1,4 +1,5 @@
 using FSTime.Application.Users;
+using FSTime.Application.Workschedules;
 using FSTime.Contracts.Employees;
 using FSTime.Domain.EmployeeAggregate;
 
@@ -8,7 +9,7 @@ public static class Extensions
 {
     public static EmployeeResponse ToEmployeeResponse(this Employee employee)
     {
-        return new EmployeeResponse
+        var e = new EmployeeResponse
         {
             Id = employee.Id,
             CompanyId = employee.CompanyId,
@@ -21,5 +22,9 @@ public static class Extensions
             Supervisor = employee.Supervisor?.ToEmployeeResponse(),
             IsHead = employee.IsHead
         };
+
+        e.Workschedules = employee.Workschedules.Select(x => x.ToWorkscheduleResponse()).ToList();
+
+        return e;
     }
 }

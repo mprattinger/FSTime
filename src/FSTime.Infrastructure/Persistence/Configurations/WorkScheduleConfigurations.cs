@@ -13,8 +13,7 @@ public class WorkScheduleConfigurations : IEntityTypeConfiguration<WorkSchedule>
 
         builder.Property(x => x.CompanyId);
 
-        builder.Property(x => x.WeekWorkTime);
-        builder.Property(x => x.WeekWorkDays);
+        builder.Property(x => x.Description);
 
         builder.Property(x => x.Monday);
         builder.Property(x => x.Tuesday);

@@ -5,10 +5,10 @@ namespace FSTime.Domain.Common.ValueObjects;
 
 public class EmployeeWorkschedule : ValueObject
 {
-    public EmployeeWorkschedule(Guid employeeId, Guid workplanId, DateTime from, DateTime? to = null)
+    public EmployeeWorkschedule(Guid employeeId, Guid workscheduleId, DateTime from, DateTime? to = null)
     {
         EmployeeId = employeeId;
-        WorkscheduleId = workplanId;
+        WorkscheduleId = workscheduleId;
         From = from;
         To = to;
     }
@@ -24,7 +24,12 @@ public class EmployeeWorkschedule : ValueObject
     public WorkSchedule Workschedule { get; } = null!;
 
     public DateTime From { get; }
-    public DateTime? To { get; }
+    public DateTime? To { get; private set; }
+
+    public void SetTo(DateTime date)
+    {
+        To = date;
+    }
 
     public override IEnumerable<object?> GetEqualityComponents()
     {
