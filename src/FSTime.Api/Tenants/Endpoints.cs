@@ -1,11 +1,14 @@
-using System.IdentityModel.Tokens.Jwt;
+using ErrorOr;
+using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Common;
 using FSTime.Application.Tenants.Commands;
 using FSTime.Application.Tenants.Queries;
 using FSTime.Contracts.Tenants;
-using MediatR;
+using FSTime.Domain.TenantAggregate;
+using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FSTime.Api.Tenants;
 
@@ -15,7 +18,7 @@ public class Endpoints : IEndpoint
     {
         var grp = app.MapGroup("tenants");
 
-        grp.MapPost("", async (CreateTenantRequest request, IMediator mediator, HttpContext context) =>
+        grp.MapPost("", async (CreateTenantRequest request, [FromServices] IRequestHandler<CreateTenant.Command, ErrorOr<Guid>> handler, HttpContext context) =>
         {
             if (context.User.Identity is null) return Results.Unauthorized();
             if (!context.User.Identity.IsAuthenticated) return Results.Unauthorized();
@@ -24,7 +27,7 @@ public class Endpoints : IEndpoint
             if (idClaim is null) return Results.Unauthorized();
 
             var guid = Guid.Parse(idClaim.Value);
-            var result = await mediator.Send(new CreateTenant.Command(request.Name, guid));
+            var result = await handler.Handle(new CreateTenant.Command(request.Name, guid));
 
             return result.Match(
                 id => Results.Created($"tenants/{id}", id),
@@ -32,7 +35,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization();
 
-        grp.MapGet("", async (HttpContext context, IMediator mediator) =>
+        grp.MapGet("", async (HttpContext context, [FromServices] IRequestHandler<GetTenantById.Query, ErrorOr<Tenant>> handler) =>
         {
             if (context.User.Identity is null) return Results.Unauthorized();
             if (!context.User.Identity.IsAuthenticated) return Results.Unauthorized();
@@ -40,14 +43,14 @@ public class Endpoints : IEndpoint
             var idClaim = context.GetTenantIdFromHttpContext();
             if (idClaim is null) return Results.Unauthorized();
 
-            var result = await mediator.Send(new GetTenantById.Query(idClaim.Value));
+            var result = await handler.Handle(new GetTenantById.Query(idClaim.Value));
             return result.Match(
                 t => Results.Ok(t),
                 err => err.ToProblemDetails()
             );
         }).RequireAuthorization();
 
-        grp.MapPost("/adduser", async (AssignUserRequest request, IMediator mediator, HttpContext context) =>
+        grp.MapPost("/adduser", async (AssignUserRequest request, [FromServices] IRequestHandler<AddUserToTenant.Command, ErrorOr<Tenant>> handler, HttpContext context) =>
         {
             if (context.User.Identity is null) return Results.Unauthorized();
             if (!context.User.Identity.IsAuthenticated) return Results.Unauthorized();
@@ -57,7 +60,7 @@ public class Endpoints : IEndpoint
 
             var userId = Guid.Parse(request.UserId);
 
-            var result = await mediator.Send(new AddUserToTenant.Command((Guid)tenantId, userId, request.Role));
+            var result = await handler.Handle(new AddUserToTenant.Command((Guid)tenantId, userId, request.Role));
             return result.Match(
                 t => Results.Ok(t),
                 err => err.ToProblemDetails()

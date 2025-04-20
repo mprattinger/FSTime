@@ -1,9 +1,9 @@
 ﻿using ErrorOr;
+using FlintSoft.CQRS;
 using FluentValidation;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Users;
 using FSTime.Domain.UserAggregate;
-using MediatR;
 
 namespace FSTime.Application.Users.Commands;
 
@@ -40,12 +40,12 @@ public static class CreateUser
 
                 var pw = passwordService.HashPassword(request.password);
                 var verifyToken = tokenService.GenerateEmailVerificationToken();
-                
+
                 var user = new User(request.username, pw.password, request.email, pw.salt, verifyToken, DateTime.UtcNow.AddHours(2));
 
                 var res = await userRepository.AddUser(user);
-                
-                var ret  = new RegisterUserResult(res.Id, verifyToken, res.Email);
+
+                var ret = new RegisterUserResult(res.Id, verifyToken, res.Email);
                 return ret;
             }
             catch (Exception ex)

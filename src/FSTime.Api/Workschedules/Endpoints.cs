@@ -1,10 +1,12 @@
+using ErrorOr;
+using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Workplans.Queries;
 using FSTime.Application.Workschedules.Commands;
 using FSTime.Application.Workschedules.Queries;
 using FSTime.Contracts.WorkSchedule;
-using MediatR;
+using FSTime.Domain.WorkScheduleAggregate;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FSTime.Api.Workschedules;
@@ -15,9 +17,9 @@ public class Endpoints : IEndpoint
     {
         var group = app.MapGroup("workschedules");
 
-        group.MapGet("", async ([FromQuery] Guid company, IMediator mediator) =>
+        group.MapGet("", async ([FromQuery] Guid company, [FromServices] IRequestHandler<GetWorkschedules.Query, ErrorOr<List<WorkSchedule>>> handler) =>
         {
-            var result = await mediator.Send(new GetWorkschedules.Query(company));
+            var result = await handler.Handle(new GetWorkschedules.Query(company));
 
             return result.Match(
                 plans => Results.Ok(plans),
@@ -25,9 +27,9 @@ public class Endpoints : IEndpoint
             );
         });
 
-        group.MapGet("/{id}", async (Guid id, IMediator mediator) =>
+        group.MapGet("/{id}", async (Guid id, [FromServices] IRequestHandler<GetWorkschedule.Query, ErrorOr<WorkSchedule>> handler) =>
         {
-            var result = await mediator.Send(new GetWorkschedule.Query(id));
+            var result = await handler.Handle(new GetWorkschedule.Query(id));
 
             return result.Match(
                 plan => Results.Ok(plan),
@@ -36,7 +38,7 @@ public class Endpoints : IEndpoint
         });
 
         group.MapPost("/daily",
-            async ([FromQuery] Guid company, DailyWorkscheduleRequest request, IMediator mediator) =>
+            async ([FromQuery] Guid company, DailyWorkscheduleRequest request, [FromServices] IRequestHandler<CreateDailyWorkschedule.Command, ErrorOr<WorkSchedule>> handler) =>
             {
                 var days = new Dictionary<DayOfWeek, double>();
                 days.Add(DayOfWeek.Monday, request.Monday);
@@ -48,7 +50,7 @@ public class Endpoints : IEndpoint
                 days.Add(DayOfWeek.Sunday, request.Sunday);
 
                 var result =
-                    await mediator.Send(new CreateDailyWorkschedule.Command(company, request.Description, days));
+                    await handler.Handle(new CreateDailyWorkschedule.Command(company, request.Description, days));
 
                 return result.Match(
                     plan => Results.Ok(plan),
@@ -57,10 +59,10 @@ public class Endpoints : IEndpoint
             });
 
         group.MapPost("/weekly",
-            async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, IMediator mediator) =>
+            async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, [FromServices] IRequestHandler<CreateWeekWorkschedule.Command, ErrorOr<WorkSchedule>> handler) =>
             {
                 var result =
-                    await mediator.Send(new CreateWeekWorkschedule.Command(company, request.Description,
+                    await handler.Handle(new CreateWeekWorkschedule.Command(company, request.Description,
                         request.WeeklyWorktime, request.Workdays));
 
                 return result.Match(

@@ -1,8 +1,8 @@
 using ErrorOr;
+using FlintSoft.CQRS;
 using FluentValidation;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Domain.AuthorizationAggregate;
-using MediatR;
 
 namespace FSTime.Application.Authorization.Commands;
 

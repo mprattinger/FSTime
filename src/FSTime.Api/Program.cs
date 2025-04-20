@@ -3,7 +3,6 @@ using FSTime.Api.Common.Errors;
 using FSTime.Application;
 using FSTime.Infrastructure;
 using System.Reflection;
-using FSTime.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 

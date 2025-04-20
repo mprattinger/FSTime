@@ -1,8 +1,8 @@
 using ErrorOr;
+using FlintSoft.CQRS;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Employees;
 using FSTime.Domain.EmployeeAggregate;
-using MediatR;
 
 namespace FSTime.Application.Employees.Commands;
 

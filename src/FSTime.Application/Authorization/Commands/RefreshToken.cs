@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
+using FlintSoft.CQRS;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Authorization;
-using MediatR;
 
 namespace FSTime.Application.Authorization.Commands;
 public static class RefreshToken

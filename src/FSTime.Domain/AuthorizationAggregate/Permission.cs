@@ -9,8 +9,7 @@ public enum PermissionAction
     Unknown = 0,
     Read = 1,
     Update = 2,
-    Delete = 3,
-    All = 4
+    Delete = 3
 }
 
 public class Permission : AggregateRoot
