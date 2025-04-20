@@ -1,7 +1,7 @@
 using ErrorOr;
+using FlintSoft.CQRS;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Domain.WorkScheduleAggregate;
-using MediatR;
 
 namespace FSTime.Application.Workschedules.Commands;
 

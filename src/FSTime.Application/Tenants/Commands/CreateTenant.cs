@@ -1,16 +1,16 @@
 using ErrorOr;
+using FlintSoft.CQRS;
 using FluentValidation;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Domain.Common.ValueObjects;
 using FSTime.Domain.TenantAggregate;
-using MediatR;
 
 namespace FSTime.Application.Tenants.Commands;
 
 public static class CreateTenant
 {
     public record Command(string Name, Guid UserId) : IRequest<ErrorOr<Guid>>;
-    
+
     public class Validator : AbstractValidator<Command>
     {
         public Validator()

@@ -23,4 +23,9 @@ public static class AuthorizationErrors
     {
         return Error.Conflict("PERMISSION_HANDLER.MY.ERROR", "When retrieving permissions an error occured: " + msg);
     }
+
+    public static Error GetActions_InvalidGroup(string grp)
+    {
+        return Error.Validation("GETACTIONS_HANDLER.GROUP_NOT_VALID", $"Group {grp} is not valid");
+    }
 }

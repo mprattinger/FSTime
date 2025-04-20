@@ -1,10 +1,9 @@
 ﻿using ErrorOr;
+using FlintSoft.CQRS;
 using FluentValidation;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Authorization;
 using FSTime.Domain.TenantAggregate;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace FSTime.Application.Authorization.Commands;
 

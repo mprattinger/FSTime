@@ -1,8 +1,8 @@
 using ErrorOr;
+using FlintSoft.CQRS;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Contracts.Common.Exceptions.Tenants;
 using FSTime.Domain.TenantAggregate;
-using MediatR;
 
 namespace FSTime.Application.Tenants.Commands;
 

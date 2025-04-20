@@ -9,7 +9,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using FSTime.Domain.TenantAggregate;
 
 namespace FSTime.Infrastructure.Services;
 
@@ -28,7 +27,7 @@ public class TokenService(IDateTimeProvider dateTimeProvider, JwtSettings jwtSet
         {
             claims.Add(new Claim("TENANT", tenantId.ToString()!));
         }
-        
+
         var expiresAT = dateTimeProvider.UtcNow.AddMinutes(jwtSettings.AccessTokeExpiryMinutes ?? 0);
         var expiresRT = dateTimeProvider.UtcNow.AddMinutes(jwtSettings.RefreshTokeExpiryMinutes ?? 0);
 
@@ -46,10 +45,10 @@ public class TokenService(IDateTimeProvider dateTimeProvider, JwtSettings jwtSet
         {
             tokenHandler.ValidateToken(token, Utils.GetTokenValidationParameters(jwtSettings.Issuer!, jwtSettings.Audience!, jwtSettings.Secret!), out var securityToken);
             var jwtToken = tokenHandler.ReadJwtToken(token);
-            
+
             var userIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
             userId = userIdClaim?.Value;
-            
+
             var tenantIdClaim = jwtToken.Claims.FirstOrDefault(x => x.Type == "TENANT");
             tenantId = tenantIdClaim is not null ? Guid.Parse(tenantIdClaim.Value) : null;
             return true;
@@ -88,6 +87,6 @@ public class TokenService(IDateTimeProvider dateTimeProvider, JwtSettings jwtSet
             rng.GetBytes(tokenBytes);
         }
         var token = Convert.ToBase64String(tokenBytes);
-        return token;
+        return token.Normalize();
     }
 }

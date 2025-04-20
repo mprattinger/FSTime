@@ -1,8 +1,8 @@
 using ErrorOr;
+using FlintSoft.CQRS;
 using FSTime.Application.Common.Interfaces;
 using FSTime.Application.Workschedules;
 using FSTime.Domain.WorkScheduleAggregate;
-using MediatR;
 
 namespace FSTime.Application.Workplans.Queries;
 

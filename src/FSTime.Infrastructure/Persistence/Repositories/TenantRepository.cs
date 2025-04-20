@@ -87,4 +87,11 @@ public class TenantRepository(FSTimeDbContext context) : ITenantRepository
             .Tenants
             .AnyAsync(x => x.Id == tenantId && x.Users.Any(y => y.UserId == userId));
     }
+
+    public async Task<bool> IsTenantAdmin(Guid tenantId, Guid userId)
+    {
+        return await context
+            .Tenants
+            .AnyAsync(x => x.Id == tenantId && x.Users.Any(y => y.UserId == userId && y.RoleName == "ADMIN"));
+    }
 }

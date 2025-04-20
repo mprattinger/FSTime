@@ -48,20 +48,30 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
                 group = r;
             }
 
+            var tenantRepository = scope.ServiceProvider.GetRequiredService<ITenantRepository>();
+            if (tenantRepository is null) continue;
+
+            if (context.Resource is null) continue;
+            var ctx = (HttpContext)context.Resource;
+            var tid = ctx.GetTenantIdFromHttpContext();
+
             if (group == "TENANT")
             {
-                var tenantRepository = scope.ServiceProvider.GetRequiredService<ITenantRepository>();
-                if (tenantRepository is null) continue;
-
-                if (context.Resource is null) continue;
-                var ctx = (HttpContext)context.Resource;
-                var tid = ctx.GetTenantIdFromHttpContext();
-
                 if (tid is null) continue;
                 //Für den Tenant, hat der User eine eigene Rolle in der TenantRole Tabelle.
                 //In Action steht der Name der Rolle
                 var hasRole = await tenantRepository.TenantUserHasRole(tid!.Value, parsedUserId, action);
                 if (hasRole)
+                {
+                    context.Succeed(requirement);
+                    return;
+                }
+            }
+
+            //Kein Tenant, aber der Tenant Admin hat immer alle Rechte
+            if (tid is not null)
+            {
+                if (await tenantRepository.IsTenantAdmin(tid!.Value, parsedUserId))
                 {
                     context.Succeed(requirement);
                     return;

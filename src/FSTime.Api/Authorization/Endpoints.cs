@@ -1,8 +1,10 @@
-﻿using FlintSoft.Endpoints;
+﻿using ErrorOr;
+using FlintSoft.CQRS;
+using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Authorization.Commands;
 using FSTime.Contracts.Authorization;
-using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FSTime.Api.Authorization;
 
@@ -13,16 +15,16 @@ public class Endpoints : IEndpoint
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
         var grp = app.MapGroup("auth");
-        
-        grp.MapPost("/login", async (LoginRequest request, IMediator mediator, HttpResponse response) =>
+
+        grp.MapPost("/login", async (LoginRequest request, HttpResponse response, [FromServices] IRequestHandler<LoginUser.Command, ErrorOr<LoginResponse>> handler) =>
         {
             Guid? tenantId = null;
             if (!string.IsNullOrEmpty(request.TenantId))
             {
                 tenantId = Guid.Parse(request.TenantId);
             }
-            
-            var result = await mediator.Send(new LoginUser.Command(request.Username, request.Password, tenantId));
+
+            var result = await handler.Handle(new LoginUser.Command(request.Username, request.Password, tenantId));
 
             if (result.IsError)
             {
@@ -40,11 +42,11 @@ public class Endpoints : IEndpoint
             return Results.Ok(result.Value);
         });
 
-        grp.MapGet("/refresh", async (HttpContext context, IMediator mediator) =>
+        grp.MapGet("/refresh", async (HttpContext context, [FromServices] IRequestHandler<RefreshToken.Command, ErrorOr<RefreshTokenResponse>> handler) =>
         {
             if (context.Request.Cookies.TryGetValue(COOKIENAME, out var refreshToken))
             {
-                var result = await mediator.Send(new RefreshToken.Command(refreshToken));
+                var result = await handler.Handle(new RefreshToken.Command(refreshToken));
                 if (result.IsError)
                 {
                     return result.Errors.ToProblemDetails();

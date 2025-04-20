@@ -12,4 +12,5 @@ public interface ITenantRepository
     Task<Tenant> UpdateUserTenantRole(Guid tenantId, Guid userId, string role);
     Task<bool> RemoveUserFromTenant(Guid tenantId, Guid userId);
     Task<bool> IsTenantUser(Guid tenantId, Guid userId);
+    Task<bool> IsTenantAdmin(Guid tenantId, Guid userId);
 }
