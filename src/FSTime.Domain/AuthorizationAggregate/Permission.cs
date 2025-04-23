@@ -15,25 +15,25 @@ public enum PermissionAction
 
 public class Permission : AggregateRoot
 {
-    public Permission(Guid tenantId, Guid userId, string group, PermissionAction action) : this(tenantId, userId)
+    public Permission(Guid tenantId, Guid userId, string group, PermissionAction action, Guid? id = null) : this(tenantId, userId, id)
     {
         Group = group;
         Action = action;
     }
 
-    public Permission(Guid tenantId, User user, string group, PermissionAction action) : this(tenantId, user)
+    public Permission(Guid tenantId, User user, string group, PermissionAction action, Guid? id = null) : this(tenantId, user, id)
     {
         Group = group;
         Action = action;
     }
 
-    public Permission(Guid tenantId, Guid userId)
+    public Permission(Guid tenantId, Guid userId, Guid? id = null) : base(id ?? Guid.CreateVersion7())
     {
         TenantId = tenantId;
         UserId = userId;
     }
 
-    public Permission(Guid tenantId, User user)
+    public Permission(Guid tenantId, User user, Guid? id = null) : base(id ?? Guid.CreateVersion7())
     {
         UserId = user.Id;
         User = user;

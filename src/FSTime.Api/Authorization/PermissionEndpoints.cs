@@ -1,10 +1,11 @@
 using ErrorOr;
 using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
-
 using FSTime.Api.Common.Errors;
+using FSTime.Application.Authorization.Commands;
 using FSTime.Application.Authorization.Queries;
 using FSTime.Application.Common;
+using FSTime.Contracts.Authorization;
 using FSTime.Domain.AuthorizationAggregate;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,6 +62,27 @@ public class PermissionEndpoints : IEndpoint
 
             return result.Match(
                 groups => Results.Ok(groups),
+                error => Results.BadRequest(error.ToProblemDetails()));
+        }).RequireAuthorization("TENANT.ADMIN");
+
+        grp.MapPost("/", async (SetPermissionRequest data, HttpContext context, [FromServices] IRequestHandler<SetPermission.Command, ErrorOr<List<Permission>>> handler) =>
+        {
+            var tenantId = context.GetTenantIdFromHttpContext();
+            if (tenantId is null) return Results.Unauthorized();
+
+            if (!Enum.TryParse<PermissionAction>(data.Action, out var action))
+            {
+                return Results.BadRequest(new ProblemDetails
+                {
+                    Title = "Invalid Action",
+                    Detail = $"The action '{data.Action}' is not valid."
+                });
+            }
+
+            var result = await handler.Handle(new SetPermission.Command(tenantId.Value, data.UserId, data.Group, action));
+
+            return result.Match(
+                perm => Results.Ok(perm),
                 error => Results.BadRequest(error.ToProblemDetails()));
         }).RequireAuthorization("TENANT.ADMIN");
     }

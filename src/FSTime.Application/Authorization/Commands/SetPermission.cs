@@ -8,19 +8,25 @@ namespace FSTime.Application.Authorization.Commands;
 
 public static class SetPermission
 {
-    public record Command(Guid TenantId, Guid UserId, string Group, PermissionAction? action)
+    public record Command(Guid TenantId, Guid UserId, string Group, PermissionAction action)
         : IRequest<ErrorOr<List<Permission>>>;
 
     //We need to add validation here
     public class Validator : AbstractValidator<Command>
     {
-        public Validator()
+        public Validator(IPolicyInspector policyInspector)
         {
             RuleFor(x => x.TenantId).NotEmpty();
             RuleFor(x => x.UserId).NotEmpty();
             RuleFor(x => x.Group).NotEmpty();
 
-            //Now check if the group is in the allowed group list
+            var groups = policyInspector.GetGroups();
+
+            // Check if the group is in the allowed group list
+            RuleFor(x => x.Group)
+                .Must((group, cancellationToken) =>
+                   groups.Any(x => x == group.Group))
+                .WithMessage("The specified group is not allowed.");
         }
     }
 
@@ -36,8 +42,8 @@ public static class SetPermission
                     return validationResult.Errors.ConvertAll(error =>
                         Error.Validation(error.PropertyName, error.ErrorMessage));
 
-                var permission = new Permission(request.TenantId, request.UserId, request.Group,
-                    request.action ?? PermissionAction.All);
+                var permission = new Permission(request.TenantId, request.UserId, request.Group, request.action);
+
                 var permissions = await permissionRepository.SetPermission(permission);
 
                 var permissionsList = await permissionRepository.GetPermissions(request.TenantId, request.UserId);

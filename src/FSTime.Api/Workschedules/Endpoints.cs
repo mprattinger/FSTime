@@ -35,7 +35,7 @@ public class Endpoints : IEndpoint
                 plan => Results.Ok(plan),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
-        });
+        }).RequireAuthorization("WORKSCHEDULE.Read");
 
         group.MapPost("/daily",
             async ([FromQuery] Guid company, DailyWorkscheduleRequest request, [FromServices] IRequestHandler<CreateDailyWorkschedule.Command, ErrorOr<WorkSchedule>> handler) =>
@@ -56,7 +56,7 @@ public class Endpoints : IEndpoint
                     plan => Results.Ok(plan),
                     error => Results.BadRequest(error.ToProblemDetails())
                 );
-            });
+            }).RequireAuthorization("WORKSCHEDULE.Update");
 
         group.MapPost("/weekly",
             async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, [FromServices] IRequestHandler<CreateWeekWorkschedule.Command, ErrorOr<WorkSchedule>> handler) =>
@@ -69,6 +69,6 @@ public class Endpoints : IEndpoint
                     plan => Results.Ok(plan),
                     error => Results.BadRequest(error.ToProblemDetails())
                 );
-            });
+            }).RequireAuthorization("WORKSCHEDULE.Update");
     }
 }

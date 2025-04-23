@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 // export default defineConfig(({ mode }) => {
@@ -16,7 +17,7 @@ export default defineConfig((inp) => {
   const env = loadEnv(inp.mode, process.cwd(), '');
 
   return {
-    plugins: [react()],
+    plugins: [react(), tailwindcss()],
     server: {
       port: parseInt(env.PORT),
       proxy: {
