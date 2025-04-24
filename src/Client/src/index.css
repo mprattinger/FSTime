@@ -1,1 +1,32 @@
 @import "tailwindcss";
+
+@layer base {
+    @font-face {
+      font-family: "caveat";
+      src: url("/assets/fonts/Caveat-Regular.ttf") format("truetype");
+  
+      font-weight: normal;
+      font-variant: normal;
+    }
+    @font-face {
+      font-family: "Caveat";
+      src: url("/assets/fonts/Caveat-Bold.ttf") format("truetype");
+  
+      font-variant: normal;
+      font-weight: bold;
+    }
+    @font-face {
+      font-family: "Caveat";
+      src: url("/assets/fonts/Caveat-Medium.ttf") format("truetype");
+  
+      font-weight: medium;
+      font-variant: normal;
+    }
+    @font-face {
+      font-family: "Caveat";
+      src: url("/assets/fonts/Caveat-SemiBold.ttf") format("truetype");
+  
+      font-weight: semi-bold;
+      font-variant: normal;
+    }
+  }

@@ -18,6 +18,11 @@ export default defineConfig((inp) => {
 
   return {
     plugins: [react(), tailwindcss()],
+    resolve: {
+      alias: {
+        '@': '/src',
+      },
+    },
     server: {
       port: parseInt(env.PORT),
       proxy: {
