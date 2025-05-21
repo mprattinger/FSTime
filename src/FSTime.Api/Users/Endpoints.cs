@@ -1,5 +1,4 @@
 ﻿using ErrorOr;
-using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Users.Commands;
@@ -12,9 +11,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var grp = app.MapGroup("users");
+        var grp = app.MapGroup("api/users");
 
-        grp.MapPost("", async ([FromBody] RegisterUserRequest request, HttpContext context, [FromServices] IRequestHandler<CreateUser.Command, ErrorOr<RegisterUserResult>> handler) =>
+        grp.MapPost("", async ([FromBody] RegisterUserRequest request, HttpContext context, [FromServices] ICommandHAndler<CreateUser.Command, RegisterUserResult> handler) =>
         {
             var command = new CreateUser.Command(request.username, request.password, request.email);
 
@@ -30,7 +29,7 @@ public class Endpoints : IEndpoint
                 );
         });
 
-        grp.MapGet("/verify", async (string token, string email, [FromServices] IRequestHandler<VerifyUser.Command, ErrorOr<Success>> handler) =>
+        grp.MapGet("/verify", async (string token, string email, [FromServices] ICommandHandler<VerifyUser.Command, Success> handler) =>
         {
             var result = await handler.Handle(new VerifyUser.Command(token, email));
 

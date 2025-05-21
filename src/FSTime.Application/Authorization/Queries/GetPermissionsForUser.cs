@@ -7,24 +7,39 @@ namespace FSTime.Application.Authorization.Queries;
 
 public static class GetPermissionsForUser
 {
-    public record Query(Guid tenantId, Guid UserId) : IRequest<ErrorOr<List<Permission>>>;
+    public record Query(Guid TenantId, Guid UserId) : IQuery<List<Permission>>;
 
-    internal sealed class Handler(IPermissionRepository permissionRepository)
-        : IRequestHandler<Query, ErrorOr<List<Permission>>>
+    internal sealed class Handler(IPermissionRepository permissionRepository, ITenantRepository tenantRepository)
+        : IQueryHandler<Query, List<Permission>>
     {
         public async Task<ErrorOr<List<Permission>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var permissions = await permissionRepository.GetPermissions(request.tenantId, request.UserId);
-                if (!permissions.Any()) return AuthorizationErrors.NoPermissions();
+            var ret = new List<Permission>();
 
-                return permissions;
-            }
-            catch (Exception e)
+            var permissions = await permissionRepository.GetPermissions(request.TenantId, request.UserId);
+            if (permissions.Any())
             {
-                return AuthorizationErrors.Permissions_GenError(e.Message);
+                ret.AddRange(permissions);
             }
+
+            //Prüfen auf TENANT Role
+            var tenants = await tenantRepository.GetTenantRoles(request.TenantId, request.UserId);
+            foreach (var t in tenants)
+            {
+                var u = t.Users.First(x => x.UserId == request.UserId);
+                if (u is not null)
+                {
+                    var p = new Permission(t.Id, u.UserId, group: $"TEMANT.{u.RoleName}", PermissionAction.All);
+                    ret.Add(p);
+                }
+            }
+
+            if (!ret.Any())
+            {
+                return AuthorizationErrors.NoPermissions();
+            }
+
+            return ret;
         }
     }
 }

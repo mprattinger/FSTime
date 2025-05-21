@@ -9,7 +9,7 @@ namespace FSTime.Application.Tenants.Commands;
 
 public static class CreateTenant
 {
-    public record Command(string Name, Guid UserId) : IRequest<ErrorOr<Guid>>;
+    public record Command(string Name, Guid UserId) : ICommand<Guid>;
 
     public class Validator : AbstractValidator<Command>
     {
@@ -20,29 +20,23 @@ public static class CreateTenant
         }
     }
 
-    internal sealed class Handler(IValidator<Command> validator, ITenantRepository tenantRepository) : IRequestHandler<Command, ErrorOr<Guid>>
+    internal sealed class Handler(IValidator<Command> validator, ITenantRepository tenantRepository) : ICommandHandler<Command, Guid>
     {
         public async Task<ErrorOr<Guid>> Handle(Command request, CancellationToken cancellationToken)
         {
-            try
+            var validation = await validator.ValidateAsync(request, cancellationToken);
+            if (!validation.IsValid)
             {
-                var validation = await validator.ValidateAsync(request, cancellationToken);
-                if (!validation.IsValid)
-                {
-                    return validation.Errors.ConvertAll(error => Error.Validation(error.PropertyName, error.ErrorMessage));
-                }
+                return validation.Errors.ConvertAll(error => Error.Validation(error.PropertyName, error.ErrorMessage));
+            }
 
-                var tenantGuid = Guid.CreateVersion7();
-                var tenant = new Tenant(request.Name, tenantGuid);
-                var role = new TenantRole(tenantGuid, request.UserId, "ADMIN");
-                tenant.AddUser(role);
-                var result = await tenantRepository.CreateTenant(tenant);
-                return result.Id;
-            }
-            catch (Exception e)
-            {
-                return TenantErrors.Creation_Error(request.Name, e.Message);
-            }
+            var tenantGuid = Guid.CreateVersion7();
+            var tenant = new Tenant(request.Name, tenantGuid);
+            var role = new TenantRole(tenantGuid, request.UserId, "ADMIN");
+            tenant.AddUser(role);
+            var result = await tenantRepository.CreateTenant(tenant);
+            return result.Id;
+
         }
     }
 }

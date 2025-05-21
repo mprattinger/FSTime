@@ -28,7 +28,7 @@ public static class CustomProblemDetailResult
         var allTheErrors = new Dictionary<string, object?>();
         foreach (var error in errors)
         {
-            allTheErrors.Add(error.Code, new[] { error.Description });
+            allTheErrors.Add("meta", new MetaInfo(error.Code, error.Description));
         }
 
         return Results.Problem(statusCode: statusCode,
@@ -67,3 +67,5 @@ public static class CustomProblemDetailResult
         return Results.ValidationProblem(modelStateDictionary);
     }
 }
+
+public record MetaInfo(string Code, string Description);

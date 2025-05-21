@@ -6,9 +6,9 @@ namespace FSTime.Application.Authorization.Queries;
 
 public static class GetGroups
 {
-    public record Query() : IRequest<ErrorOr<List<string>>>;
+    public record Query() : IQuery<List<string>>;
 
-    internal sealed class Handler(IPolicyInspector policyInspector) : IRequestHandler<Query, ErrorOr<List<string>>>
+    internal sealed class Handler(IPolicyInspector policyInspector) : IQueryHandler<Query, List<string>>
     {
         public Task<ErrorOr<List<string>>> Handle(Query request, CancellationToken cancellationToken = default)
         {

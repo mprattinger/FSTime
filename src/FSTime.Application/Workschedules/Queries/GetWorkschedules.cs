@@ -7,23 +7,16 @@ namespace FSTime.Application.Workschedules.Queries;
 
 public static class GetWorkschedules
 {
-    public record Query(Guid companyId) : IRequest<ErrorOr<List<WorkSchedule>>>;
+    public record Query(Guid companyId) : IQuery<List<WorkSchedule>>;
 
     internal sealed class Handler(IWorkScheduleRepository repository)
-        : IRequestHandler<Query, ErrorOr<List<WorkSchedule>>>
+        : IQueryHandler<Query, List<WorkSchedule>>
     {
         public async Task<ErrorOr<List<WorkSchedule>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var workschedules = await repository.GetAll(request.companyId);
+            var workschedules = await repository.GetAll(request.companyId);
 
-                return workschedules;
-            }
-            catch (Exception e)
-            {
-                return WorkscheduleErrors.Get_Workschedules(e.Message);
-            }
+            return workschedules;
         }
     }
 }

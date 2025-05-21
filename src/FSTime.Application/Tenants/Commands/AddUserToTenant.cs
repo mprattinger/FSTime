@@ -8,9 +8,9 @@ namespace FSTime.Application.Tenants.Commands;
 
 public static class AddUserToTenant
 {
-    public record Command(Guid TenantId, Guid UserId, string Role) : IRequest<ErrorOr<Tenant>>;
+    public record Command(Guid TenantId, Guid UserId, string Role) : ICommand<Tenant>;
 
-    internal sealed class Handler(ITenantRepository tenantRepository) : IRequestHandler<Command, ErrorOr<Tenant>>
+    internal sealed class Handler(ITenantRepository tenantRepository) : ICommandHandler<Command, Tenant>
     {
         public async Task<ErrorOr<Tenant>> Handle(Command request, CancellationToken cancellationToken)
         {

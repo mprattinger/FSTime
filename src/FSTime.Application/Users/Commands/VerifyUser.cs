@@ -6,9 +6,9 @@ namespace FSTime.Application.Users.Commands;
 
 public static class VerifyUser
 {
-    public record Command(string token, string email) : IRequest<ErrorOr<Success>>;
+    public record Command(string token, string email) : ICommand<Success>;
 
-    internal sealed class Handler(IUserRepository userRepository) : IRequestHandler<Command, ErrorOr<Success>>
+    internal sealed class Handler(IUserRepository userRepository) : ICommandHandler<Command, Success>
     {
         public async Task<ErrorOr<Success>> Handle(Command request, CancellationToken cancellationToken)
         {

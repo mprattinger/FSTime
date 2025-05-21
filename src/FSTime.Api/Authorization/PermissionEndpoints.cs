@@ -1,5 +1,4 @@
 using ErrorOr;
-using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Authorization.Commands;
@@ -15,9 +14,9 @@ public class PermissionEndpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var grp = app.MapGroup("permissions");
+        var grp = app.MapGroup("api/permissions");
 
-        grp.MapGet("/my", async (HttpContext context, [FromServices] IRequestHandler<GetPermissionsForUser.Query, ErrorOr<List<Permission>>> handler) =>
+        grp.MapGet("/my", async (HttpContext context, [FromServices] IQueryHandler<GetPermissionsForUser.Query, List<Permission>> handler) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
@@ -34,7 +33,7 @@ public class PermissionEndpoints : IEndpoint
             );
         }).RequireAuthorization();
 
-        grp.MapGet("/{userId}", async (Guid userId, HttpContext context, [FromServices] IRequestHandler<GetPermissionsForUser.Query, ErrorOr<List<Permission>>> handler) =>
+        grp.MapGet("/{userId}", async (Guid userId, HttpContext context, [FromServices] IQueryHandler<GetPermissionsForUser.Query, List<Permission>> handler) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
@@ -47,7 +46,7 @@ public class PermissionEndpoints : IEndpoint
             );
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapGet("/groups", async ([FromServices] IRequestHandler<GetGroups.Query, ErrorOr<List<string>>> handler) =>
+        grp.MapGet("/groups", async ([FromServices] IQueryHandler<GetGroups.Query, List<string>> handler) =>
         {
             var result = await handler.Handle(new GetGroups.Query());
 
@@ -56,7 +55,7 @@ public class PermissionEndpoints : IEndpoint
                 error => Results.BadRequest(error.ToProblemDetails()));
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapGet("/actions/{group}", async (string group, [FromServices] IRequestHandler<GetActions.Query, ErrorOr<List<string>>> handler) =>
+        grp.MapGet("/actions/{group}", async (string group, [FromServices] IQueryHandler<GetActions.Query, List<string>> handler) =>
         {
             var result = await handler.Handle(new GetActions.Query(group));
 
@@ -65,7 +64,7 @@ public class PermissionEndpoints : IEndpoint
                 error => Results.BadRequest(error.ToProblemDetails()));
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapPost("/", async (SetPermissionRequest data, HttpContext context, [FromServices] IRequestHandler<SetPermission.Command, ErrorOr<List<Permission>>> handler) =>
+        grp.MapPost("/", async (SetPermissionRequest data, HttpContext context, [FromServices] ICommandHandler<SetPermission.Command, List<Permission>> handler) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();

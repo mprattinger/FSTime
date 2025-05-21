@@ -92,6 +92,14 @@ public class PermissionAuthorizationHandler(IServiceScopeFactory serviceScopeFac
 
                         var httpContext = (HttpContext)context.Resource;
                         var segments = httpContext?.Request?.Path.Value?.Split('/') ?? [];
+
+                        if (segments[segments.Length - 1] == "me")
+                        {
+                            context.Succeed(requirement);
+                            return;
+                        }
+
+
                         if (!Guid.TryParse(segments[segments.Length - 1], out var parsedId)) continue;
 
                         if (emp.Id == parsedId)

@@ -1,5 +1,4 @@
 using ErrorOr;
-using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Workplans.Queries;
@@ -15,9 +14,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("workschedules");
+        var group = app.MapGroup("api/workschedules");
 
-        group.MapGet("", async ([FromQuery] Guid company, [FromServices] IRequestHandler<GetWorkschedules.Query, ErrorOr<List<WorkSchedule>>> handler) =>
+        group.MapGet("", async ([FromQuery] Guid company, [FromServices] IQueryHandler<GetWorkschedules.Query, List<WorkSchedule>> handler) =>
         {
             var result = await handler.Handle(new GetWorkschedules.Query(company));
 
@@ -27,7 +26,7 @@ public class Endpoints : IEndpoint
             );
         });
 
-        group.MapGet("/{id}", async (Guid id, [FromServices] IRequestHandler<GetWorkschedule.Query, ErrorOr<WorkSchedule>> handler) =>
+        group.MapGet("/{id}", async (Guid id, [FromServices] IQueryHandler<GetWorkschedule.Query, WorkSchedule> handler) =>
         {
             var result = await handler.Handle(new GetWorkschedule.Query(id));
 
@@ -38,7 +37,7 @@ public class Endpoints : IEndpoint
         }).RequireAuthorization("WORKSCHEDULE.Read");
 
         group.MapPost("/daily",
-            async ([FromQuery] Guid company, DailyWorkscheduleRequest request, [FromServices] IRequestHandler<CreateDailyWorkschedule.Command, ErrorOr<WorkSchedule>> handler) =>
+            async ([FromQuery] Guid company, DailyWorkscheduleRequest request, [FromServices] ICommandHandler<CreateDailyWorkschedule.Command, WorkSchedule> handler) =>
             {
                 var days = new Dictionary<DayOfWeek, double>();
                 days.Add(DayOfWeek.Monday, request.Monday);
@@ -59,7 +58,7 @@ public class Endpoints : IEndpoint
             }).RequireAuthorization("WORKSCHEDULE.Update");
 
         group.MapPost("/weekly",
-            async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, [FromServices] IRequestHandler<CreateWeekWorkschedule.Command, ErrorOr<WorkSchedule>> handler) =>
+            async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, [FromServices] ICommandHandler<CreateWeekWorkschedule.Command, WorkSchedule> handler) =>
             {
                 var result =
                     await handler.Handle(new CreateWeekWorkschedule.Command(company, request.Description,

@@ -7,26 +7,19 @@ namespace FSTime.Application.Employees.Commands;
 
 public static class SetEntryDate
 {
-    public record Command(Guid EmployeeId, DateTime Date) : IRequest<ErrorOr<EmployeeResponse>>;
+    public record Command(Guid EmployeeId, DateTime Date) : ICommand<EmployeeResponse>;
 
-    internal sealed class Handler(IEmployeeRepository repository) : IRequestHandler<Command, ErrorOr<EmployeeResponse>>
+    internal sealed class Handler(IEmployeeRepository repository) : ICommandHandler<Command, EmployeeResponse>
     {
         public async Task<ErrorOr<EmployeeResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var employee = await repository.GetEmployee(request.EmployeeId);
-                if (employee == null) return EmployeeErrors.Get_Employee_NotFound(request.EmployeeId);
+            var employee = await repository.GetEmployee(request.EmployeeId);
+            if (employee == null) return EmployeeErrors.Get_Employee_NotFound(request.EmployeeId);
 
-                employee.SetEntryDate(request.Date);
+            employee.SetEntryDate(request.Date);
 
-                var result = await repository.UpdateEmployee(employee);
-                return result.ToEmployeeResponse();
-            }
-            catch (Exception e)
-            {
-                return EmployeeErrors.SetEntryDate(e.Message);
-            }
+            var result = await repository.UpdateEmployee(employee);
+            return result.ToEmployeeResponse();
         }
     }
 }

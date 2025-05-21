@@ -1,14 +1,22 @@
 import clocks from "@/assets/clocks.png";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { LoginService } from "../services/LoginService";
+import { useAuth } from "../hooks/useAuth";
+import { ApplicationError } from "../../../common/Types";
+import { GetMyEmployeeInfo } from "../../employee/services/EmployeeService";
+import { GetPermissions } from "../services/PermissionsService";
+import { useSecureApi } from "../hooks/useSecureApi";
 
 export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { setUser, setEmployee, setPermissions, setAccessToken } = useAuth();
+  const api = useSecureApi();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const usernameRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -16,14 +24,38 @@ export const Login = () => {
 
   useEffect(() => {
     usernameRef.current?.focus();
-  }, [])
+  }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       //Check credentials against api
-  
+      const result = await LoginService(username, password);
+      if (result instanceof ApplicationError) {
+        //If not ok, show error message
+        return;
+      }
+      setUser(result.userName);
+      setAccessToken(result.accessToken);
+
+      //Eventuelle Employee infos laden
+      const employee = await GetMyEmployeeInfo(api);
+      if (employee) {
+        if (employee instanceof ApplicationError) {
+          //If not ok, show error message
+          return;
+        }
+        setEmployee(employee);
+      }
+
+      //Nun die Berechtigungen laden
+      const permissions = await GetPermissions(api);
+      if (permissions instanceof ApplicationError) {
+        return;
+      }
+      setPermissions(permissions);
+
       //If ok navigate to from
       setUsername("");
       setPassword("");
@@ -31,7 +63,7 @@ export const Login = () => {
     } catch (error) {
       console.error("Login failed", error);
     }
-  }
+  };
 
   return (
     <div className="w-full h-full absolute flex flex-col items-center bg-slate-200">

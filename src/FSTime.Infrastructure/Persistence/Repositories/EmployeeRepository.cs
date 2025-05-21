@@ -45,7 +45,12 @@ public class EmployeeRepository(FSTimeDbContext context) : IEmployeeRepository
 
     public async Task<Employee?> GetEmployeeByUserId(Guid userId)
     {
-        return await context.Employees.FirstOrDefaultAsync(e => e.UserId == userId);
+        return await context
+            .Employees
+            .Include(x => x.User)
+            .Include(x => x.Workschedules)
+            .ThenInclude(x => x.Workschedule)
+            .FirstOrDefaultAsync(x => x.UserId == userId);
     }
 
     public async Task<Employee> AssignUserToEmployee(Guid employeeId, Guid userId)

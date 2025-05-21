@@ -7,26 +7,19 @@ namespace FSTime.Application.Tenants.Queries;
 
 public static class GetTenantById
 {
-    public record Query(Guid tenantId) : IRequest<ErrorOr<Tenant>>;
+    public record Query(Guid tenantId) : IQuery<Tenant>;
 
-    internal sealed class Handler(ITenantRepository tenantRepository) : IRequestHandler<Query, ErrorOr<Tenant>>
+    internal sealed class Handler(ITenantRepository tenantRepository) : IQueryHandler<Query, Tenant>
     {
         public async Task<ErrorOr<Tenant>> Handle(Query query, CancellationToken cancellationToken)
         {
-            try
+            var t = await tenantRepository.GetTenantById(query.tenantId);
+            if (t is null)
             {
-                var t = await tenantRepository.GetTenantById(query.tenantId);
-                if (t is null)
-                {
-                    return TenantErrors.Tenant_ById_NotFound();
-                }
+                return TenantErrors.Tenant_ById_NotFound();
+            }
 
-                return t;
-            }
-            catch (Exception e)
-            {
-                return TenantErrors.Tenant_Lookup_Error(e.Message);
-            }
+            return t;
         }
     }
 }

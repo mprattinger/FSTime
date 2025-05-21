@@ -1,6 +1,4 @@
-﻿using ErrorOr;
-using FlintSoft.CQRS;
-using FlintSoft.Endpoints;
+﻿using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Authorization.Commands;
 using FSTime.Contracts.Authorization;
@@ -14,9 +12,9 @@ public class Endpoints : IEndpoint
 
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var grp = app.MapGroup("auth");
+        var grp = app.MapGroup("api/auth");
 
-        grp.MapPost("/login", async (LoginRequest request, HttpResponse response, [FromServices] IRequestHandler<LoginUser.Command, ErrorOr<LoginResponse>> handler) =>
+        grp.MapPost("/login", async (LoginRequest request, HttpResponse response, [FromServices] ICommandHandler<LoginUser.Command, LoginResponse> handler) =>
         {
             Guid? tenantId = null;
             if (!string.IsNullOrEmpty(request.TenantId))
@@ -42,7 +40,7 @@ public class Endpoints : IEndpoint
             return Results.Ok(result.Value);
         });
 
-        grp.MapGet("/refresh", async (HttpContext context, [FromServices] IRequestHandler<RefreshToken.Command, ErrorOr<RefreshTokenResponse>> handler) =>
+        grp.MapGet("/refresh", async (HttpContext context, [FromServices] ICommandHandler<RefreshToken.Command, RefreshTokenResponse> handler) =>
         {
             if (context.Request.Cookies.TryGetValue(COOKIENAME, out var refreshToken))
             {

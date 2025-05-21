@@ -1,5 +1,4 @@
 using ErrorOr;
-using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Common;
@@ -15,9 +14,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var grp = app.MapGroup("companies");
+        var grp = app.MapGroup("api/companies");
 
-        grp.MapPost("", async (CreateCompanyRequest request, HttpContext context, [FromServices] IRequestHandler<CreateCompany.Command, ErrorOr<Guid>> handler) =>
+        grp.MapPost("", async (CreateCompanyRequest request, HttpContext context, [FromServices] ICommandHandler<CreateCompany.Command, Guid> handler) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
@@ -29,7 +28,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapGet("", async (HttpContext context, [FromServices] IRequestHandler<GetCompaniesByTenant.Query, ErrorOr<List<Company>>> handler) =>
+        grp.MapGet("", async (HttpContext context, [FromServices] IQueryHandler<GetCompaniesByTenant.Query, List<Company>> handler) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();

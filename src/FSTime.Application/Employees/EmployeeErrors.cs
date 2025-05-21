@@ -16,10 +16,22 @@ public static class EmployeeErrors
             $"Error retrieving employee {id}: {error}");
     }
 
+    public static Error Get_EmployeeByUser(Guid id, string error)
+    {
+        return Error.Conflict("EMPLOYEE_HANDLER.QUERY.MY.GEN_ERROR",
+            $"Error retrieving employee for user {id}: {error}");
+    }
+
     public static Error Get_Employee_NotFound(Guid id)
     {
         return Error.NotFound("EMPLOYEE_HANDLER.QUERY.ONE.NOT_FOUND",
             $"Employee {id} not found");
+    }
+
+    public static Error Get_EmployeeByUser_NotFound(Guid id)
+    {
+        return Error.NotFound("EMPLOYEE_HANDLER.QUERY.ME.NOT_FOUND",
+            $"Employee for user {id} not found");
     }
 
     public static Error CreateEmployee(string error)

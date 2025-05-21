@@ -2,13 +2,25 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 export const useAuth = () => {
-  const {user, setUser, accessToken, setAccessToken} =  useContext(AuthContext); 
+  const {
+    user,
+    setUser,
+    accessToken,
+    setAccessToken,
+    employee,
+    setEmployee,
+    permissions,
+    setPermissions,
+  } = useContext(AuthContext);
 
   return {
     user,
     setUser,
     accessToken,
-    setAccessToken
-  }
-}
-
+    setAccessToken,
+    employee,
+    setEmployee,
+    permissions,
+    setPermissions,
+  };
+};

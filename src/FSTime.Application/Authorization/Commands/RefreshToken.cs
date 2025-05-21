@@ -6,9 +6,9 @@ using FSTime.Contracts.Authorization;
 namespace FSTime.Application.Authorization.Commands;
 public static class RefreshToken
 {
-    public record Command(string refreshToken) : IRequest<ErrorOr<RefreshTokenResponse>>;
+    public record Command(string refreshToken) : ICommand<RefreshTokenResponse>;
 
-    internal sealed class Handler(ITokenService tokenService, IUserRepository userRepository) : IRequestHandler<Command, ErrorOr<RefreshTokenResponse>>
+    internal sealed class Handler(ITokenService tokenService, IUserRepository userRepository) : ICommandHandler<Command, RefreshTokenResponse>
     {
         public async Task<ErrorOr<RefreshTokenResponse>> Handle(Command request, CancellationToken cancellationToken)
         {

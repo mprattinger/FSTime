@@ -1,5 +1,4 @@
 using ErrorOr;
-using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Common;
@@ -16,9 +15,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var grp = app.MapGroup("tenants");
+        var grp = app.MapGroup("api/tenants");
 
-        grp.MapPost("", async (CreateTenantRequest request, [FromServices] IRequestHandler<CreateTenant.Command, ErrorOr<Guid>> handler, HttpContext context) =>
+        grp.MapPost("", async (CreateTenantRequest request, [FromServices] ICommandHandler<CreateTenant.Command, Guid> handler, HttpContext context) =>
         {
             if (context.User.Identity is null) return Results.Unauthorized();
             if (!context.User.Identity.IsAuthenticated) return Results.Unauthorized();
@@ -35,7 +34,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization();
 
-        grp.MapGet("", async (HttpContext context, [FromServices] IRequestHandler<GetTenantById.Query, ErrorOr<Tenant>> handler) =>
+        grp.MapGet("", async (HttpContext context, [FromServices] ICommandHandler<GetTenantById.Query, Tenant> handler) =>
         {
             if (context.User.Identity is null) return Results.Unauthorized();
             if (!context.User.Identity.IsAuthenticated) return Results.Unauthorized();
@@ -50,7 +49,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization();
 
-        grp.MapPost("/adduser", async (AssignUserRequest request, [FromServices] IRequestHandler<AddUserToTenant.Command, ErrorOr<Tenant>> handler, HttpContext context) =>
+        grp.MapPost("/adduser", async (AssignUserRequest request, [FromServices] ICommandHandler<AddUserToTenant.Command, Tenant> handler, HttpContext context) =>
         {
             if (context.User.Identity is null) return Results.Unauthorized();
             if (!context.User.Identity.IsAuthenticated) return Results.Unauthorized();

@@ -6,9 +6,9 @@ namespace FSTime.Application.Authorization.Queries;
 
 public static class GetActions
 {
-    public record Query(string Group) : IRequest<ErrorOr<List<string>>>;
+    public record Query(string Group) : IQuery<List<string>>;
 
-    internal sealed class Handler : IRequestHandler<Query, ErrorOr<List<string>>>
+    internal sealed class Handler : IQueryHandler<Query, List<string>>
     {
         public async Task<ErrorOr<List<string>>> Handle(Query request, CancellationToken cancellationToken = default)
         {

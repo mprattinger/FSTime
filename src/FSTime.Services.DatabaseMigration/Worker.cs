@@ -1,7 +1,6 @@
-using System.Diagnostics;
 using FSTime.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using OpenTelemetry.Trace;
+using System.Diagnostics;
 
 namespace FSTime.Services.DatabaseMigration;
 
@@ -9,25 +8,25 @@ public class Worker(ILogger<Worker> logger, IServiceProvider serviceProvider, IH
 {
     internal const string ActivityName = "FSTimeMigrations";
     private static readonly ActivitySource ActivitySource = new(ActivityName);
-    
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-       using var activity = ActivitySource.StartActivity("Migrating database", ActivityKind.Client);
+        using var activity = ActivitySource.StartActivity("Migrating database", ActivityKind.Client);
 
-       try
-       {
+        try
+        {
             using var scope = serviceProvider.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<FSTimeDbContext>();
 
             await dbContext.Database.MigrateAsync();
-       }
-       catch (Exception e)
-       {
-           logger.LogError(e, "Error when migration the database: {0}", e.Message);
-           activity?.RecordException(e);
-           throw;
-       }
-       
-       hostApplicationLifetime.StopApplication();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error when migration the database: {0}", e.Message);
+            activity?.AddException(e);
+            throw;
+        }
+
+        hostApplicationLifetime.StopApplication();
     }
 }

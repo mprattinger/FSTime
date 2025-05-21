@@ -31,6 +31,11 @@ public class TenantRepository(FSTimeDbContext context) : ITenantRepository
         return await context.Tenants.FirstOrDefaultAsync(x => x.Id == tenantId);
     }
 
+    public async Task<List<Tenant>> GetTenantRoles(Guid tenantId, Guid userId)
+    {
+        return await context.Tenants.Where(x => x.Id == tenantId && x.Users.Any(y => y.UserId == userId)).ToListAsync();
+    }
+
     public async Task<bool> TenantUserHasRole(Guid tenantId, Guid userId, string role)
     {
         return await context.Tenants.AnyAsync(x =>

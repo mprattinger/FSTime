@@ -8,17 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FlintSoft.CQRS" Version="0.1.17" />
     <PackageReference Include="FlintSoft.Endpoints" Version="0.1.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FlintSoft.CQRS\FlintSoft.CQRS.csproj" />
     <ProjectReference Include="..\FSTime.Application\FSTime.Application.csproj" />
     <ProjectReference Include="..\FSTime.Contracts\FSTime.Contracts.csproj" />
     <ProjectReference Include="..\FSTime.Domain\FSTime.Domain.csproj" />

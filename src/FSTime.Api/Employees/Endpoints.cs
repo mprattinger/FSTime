@@ -1,5 +1,4 @@
 using ErrorOr;
-using FlintSoft.CQRS;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Common;
@@ -14,9 +13,9 @@ public class Endpoints : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var grp = app.MapGroup("employees");
+        var grp = app.MapGroup("api/employees");
 
-        grp.MapGet("", async ([FromQuery] Guid company, [FromServices] IRequestHandler<GetAllEmployees.Query, ErrorOr<List<EmployeeResponse>>> handler) =>
+        grp.MapGet("", async ([FromQuery] Guid company, [FromServices] IQeryHandler<GetAllEmployees.Query, List<EmployeeResponse>> handler) =>
         {
             var result = await handler.Handle(new GetAllEmployees.Query(company));
 
@@ -26,7 +25,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("EMPLOYEE.Read");
 
-        grp.MapGet("/{id}", async (Guid id, [FromServices] IRequestHandler<GetEmployee.Query, ErrorOr<EmployeeResponse>> handler) =>
+        grp.MapGet("/{id}", async (Guid id, [FromServices] IQeryHandler<GetEmployee.Query, EmployeeResponse> handler) =>
         {
             var result = await handler.Handle(new GetEmployee.Query(id));
 
@@ -36,7 +35,25 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("EMPLOYEE.Read_SELF, EMPLOYEE.Read");
 
-        grp.MapPost("", async (CreateEmployeeRequest request, [FromQuery] Guid company, [FromServices] IRequestHandler<CreateEmployee.Command, ErrorOr<EmployeeResponse>> handler) =>
+        grp.MapGet("/me", async (HttpContext context, [FromServices] IQeryHandler<GetEmployeeByUserId.Query, EmployeeResponse> handler) =>
+        {
+            //Userid ermitteln
+            var userId = context.User.Claims.FirstOrDefault(x => x.Type == "sub")?.Value;
+
+            if (!Guid.TryParse(userId, out var parsedUserId))
+            {
+                return Results.Unauthorized();
+            }
+
+            var result = await handler.Handle(new GetEmployeeByUserId.Query(parsedUserId));
+
+            return result.Match(
+                emp => Results.Ok(emp),
+                error => Results.BadRequest(error.ToProblemDetails())
+            );
+        }).RequireAuthorization("EMPLOYEE.Read_SELF");
+
+        grp.MapPost("", async (CreateEmployeeRequest request, [FromQuery] Guid company, [FromServices] ICommandHandler<CreateEmployee.Command, EmployeeResponse> handler) =>
         {
             var result = await handler.Handle(new CreateEmployee.Command(company, request.FirstName, request.LastName,
                 request.MiddleName));
@@ -47,7 +64,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("EMPLOYEE.Update");
 
-        grp.MapPost("/assignUser", async (AssignUserRequest request, HttpContext context, [FromServices] IRequestHandler<AssignUserToEmployee.Command, ErrorOr<EmployeeResponse>> handler) =>
+        grp.MapPost("/assignUser", async (AssignUserRequest request, HttpContext context, [FromServices] ICommandHandler<AssignUserToEmployee.Command, EmployeeResponse> handler) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
@@ -61,7 +78,7 @@ public class Endpoints : IEndpoint
             );
         }).RequireAuthorization("EMPLOYEE.Update");
 
-        grp.MapPost("/addworkschedule", async (AddWorkscheduleRequest request, [FromServices] IRequestHandler<AddWorkschedule.Command, ErrorOr<EmployeeResponse>> handler) =>
+        grp.MapPost("/addworkschedule", async (AddWorkscheduleRequest request, [FromServices] ICommandHandler<AddWorkschedule.Command, EmployeeResponse> handler) =>
         {
             var result = await handler.Handle(new AddWorkschedule.Command(request.EmployeeId, request.WorkscheduleId,
                 request.ValidFrom.ToDateTime(TimeOnly.MinValue).ToUniversalTime()));

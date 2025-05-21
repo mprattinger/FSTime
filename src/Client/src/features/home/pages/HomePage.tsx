@@ -1,6 +1,9 @@
+import { EmployeeInfo } from "../../employee/components/EmployeeInfo";
 
 export const HomePage = () => {
   return (
-    <div>HomePage</div>
-  )
-}
+    <div className="flex">
+      <EmployeeInfo />
+    </div>
+  );
+};
