@@ -1,5 +1,6 @@
 using ErrorOr;
-using FlintSoft.CQRS;
+using FlintSoft.CQRS.Handlers;
+using FlintSoft.CQRS.Interfaces;
 using FSTime.Domain.AuthorizationAggregate;
 
 namespace FSTime.Application.Authorization.Queries;

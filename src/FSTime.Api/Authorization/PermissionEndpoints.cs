@@ -1,4 +1,4 @@
-using ErrorOr;
+using FlintSoft.CQRS.Handlers;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Authorization.Commands;
@@ -16,7 +16,7 @@ public class PermissionEndpoints : IEndpoint
     {
         var grp = app.MapGroup("api/permissions");
 
-        grp.MapGet("/my", async (HttpContext context, [FromServices] IQueryHandler<GetPermissionsForUser.Query, List<Permission>> handler) =>
+        grp.MapGet("/my", async (HttpContext context, [FromServices] IQueryHandler<GetPermissionsForUser.Query, List<Permission>> handler, CancellationToken token) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
@@ -25,7 +25,7 @@ public class PermissionEndpoints : IEndpoint
 
             if (!Guid.TryParse(userId, out var parsedUserId)) return Results.Unauthorized();
 
-            var result = await handler.Handle(new GetPermissionsForUser.Query(tenantId.Value, parsedUserId));
+            var result = await handler.Handle(new GetPermissionsForUser.Query(tenantId.Value, parsedUserId), token);
 
             return result.Match(
                 permissions => Results.Ok(permissions),
@@ -33,12 +33,12 @@ public class PermissionEndpoints : IEndpoint
             );
         }).RequireAuthorization();
 
-        grp.MapGet("/{userId}", async (Guid userId, HttpContext context, [FromServices] IQueryHandler<GetPermissionsForUser.Query, List<Permission>> handler) =>
+        grp.MapGet("/{userId}", async (Guid userId, HttpContext context, [FromServices] IQueryHandler<GetPermissionsForUser.Query, List<Permission>> handler, CancellationToken token) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
 
-            var result = await handler.Handle(new GetPermissionsForUser.Query(tenantId.Value, userId));
+            var result = await handler.Handle(new GetPermissionsForUser.Query(tenantId.Value, userId), token);
 
             return result.Match(
                 permissions => Results.Ok(permissions),
@@ -46,25 +46,25 @@ public class PermissionEndpoints : IEndpoint
             );
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapGet("/groups", async ([FromServices] IQueryHandler<GetGroups.Query, List<string>> handler) =>
+        grp.MapGet("/groups", async ([FromServices] IQueryHandler<GetGroups.Query, List<string>> handler, CancellationToken token) =>
         {
-            var result = await handler.Handle(new GetGroups.Query());
+            var result = await handler.Handle(new GetGroups.Query(), token);
 
             return result.Match(
                 groups => Results.Ok(groups),
                 error => Results.BadRequest(error.ToProblemDetails()));
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapGet("/actions/{group}", async (string group, [FromServices] IQueryHandler<GetActions.Query, List<string>> handler) =>
+        grp.MapGet("/actions/{group}", async (string group, [FromServices] IQueryHandler<GetActions.Query, List<string>> handler, CancellationToken token) =>
         {
-            var result = await handler.Handle(new GetActions.Query(group));
+            var result = await handler.Handle(new GetActions.Query(group), token);
 
             return result.Match(
                 groups => Results.Ok(groups),
                 error => Results.BadRequest(error.ToProblemDetails()));
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapPost("/", async (SetPermissionRequest data, HttpContext context, [FromServices] ICommandHandler<SetPermission.Command, List<Permission>> handler) =>
+        grp.MapPost("/", async (SetPermissionRequest data, HttpContext context, [FromServices] ICommandHandler<SetPermission.Command, List<Permission>> handler, CancellationToken token) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
@@ -78,7 +78,7 @@ public class PermissionEndpoints : IEndpoint
                 });
             }
 
-            var result = await handler.Handle(new SetPermission.Command(tenantId.Value, data.UserId, data.Group, action));
+            var result = await handler.Handle(new SetPermission.Command(tenantId.Value, data.UserId, data.Group, action), token);
 
             return result.Match(
                 perm => Results.Ok(perm),

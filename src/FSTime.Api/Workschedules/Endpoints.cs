@@ -1,4 +1,4 @@
-using ErrorOr;
+using FlintSoft.CQRS.Handlers;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Workplans.Queries;
@@ -16,9 +16,9 @@ public class Endpoints : IEndpoint
     {
         var group = app.MapGroup("api/workschedules");
 
-        group.MapGet("", async ([FromQuery] Guid company, [FromServices] IQueryHandler<GetWorkschedules.Query, List<WorkSchedule>> handler) =>
+        group.MapGet("", async ([FromQuery] Guid company, [FromServices] IQueryHandler<GetWorkschedules.Query, List<WorkSchedule>> handler, CancellationToken token) =>
         {
-            var result = await handler.Handle(new GetWorkschedules.Query(company));
+            var result = await handler.Handle(new GetWorkschedules.Query(company), token);
 
             return result.Match(
                 plans => Results.Ok(plans),
@@ -26,9 +26,9 @@ public class Endpoints : IEndpoint
             );
         });
 
-        group.MapGet("/{id}", async (Guid id, [FromServices] IQueryHandler<GetWorkschedule.Query, WorkSchedule> handler) =>
+        group.MapGet("/{id}", async (Guid id, [FromServices] IQueryHandler<GetWorkschedule.Query, WorkSchedule> handler, CancellationToken token) =>
         {
-            var result = await handler.Handle(new GetWorkschedule.Query(id));
+            var result = await handler.Handle(new GetWorkschedule.Query(id), token);
 
             return result.Match(
                 plan => Results.Ok(plan),
@@ -37,7 +37,7 @@ public class Endpoints : IEndpoint
         }).RequireAuthorization("WORKSCHEDULE.Read");
 
         group.MapPost("/daily",
-            async ([FromQuery] Guid company, DailyWorkscheduleRequest request, [FromServices] ICommandHandler<CreateDailyWorkschedule.Command, WorkSchedule> handler) =>
+            async ([FromQuery] Guid company, DailyWorkscheduleRequest request, [FromServices] ICommandHandler<CreateDailyWorkschedule.Command, WorkSchedule> handler, CancellationToken token) =>
             {
                 var days = new Dictionary<DayOfWeek, double>();
                 days.Add(DayOfWeek.Monday, request.Monday);
@@ -49,7 +49,7 @@ public class Endpoints : IEndpoint
                 days.Add(DayOfWeek.Sunday, request.Sunday);
 
                 var result =
-                    await handler.Handle(new CreateDailyWorkschedule.Command(company, request.Description, days));
+                    await handler.Handle(new CreateDailyWorkschedule.Command(company, request.Description, days), token);
 
                 return result.Match(
                     plan => Results.Ok(plan),
@@ -58,11 +58,11 @@ public class Endpoints : IEndpoint
             }).RequireAuthorization("WORKSCHEDULE.Update");
 
         group.MapPost("/weekly",
-            async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, [FromServices] ICommandHandler<CreateWeekWorkschedule.Command, WorkSchedule> handler) =>
+            async ([FromQuery] Guid company, WeeklyWorkscheduleRequest request, [FromServices] ICommandHandler<CreateWeekWorkschedule.Command, WorkSchedule> handler, CancellationToken token) =>
             {
                 var result =
                     await handler.Handle(new CreateWeekWorkschedule.Command(company, request.Description,
-                        request.WeeklyWorktime, request.Workdays));
+                        request.WeeklyWorktime, request.Workdays), token);
 
                 return result.Match(
                     plan => Results.Ok(plan),

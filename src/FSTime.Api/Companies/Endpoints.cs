@@ -1,4 +1,4 @@
-using ErrorOr;
+using FlintSoft.CQRS.Handlers;
 using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Common;
@@ -16,24 +16,24 @@ public class Endpoints : IEndpoint
     {
         var grp = app.MapGroup("api/companies");
 
-        grp.MapPost("", async (CreateCompanyRequest request, HttpContext context, [FromServices] ICommandHandler<CreateCompany.Command, Guid> handler) =>
+        grp.MapPost("", async (CreateCompanyRequest request, HttpContext context, [FromServices] ICommandHandler<CreateCompany.Command, Guid> handler, CancellationToken token) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
 
-            var result = await handler.Handle(new CreateCompany.Command(tenantId.Value, request.CompanyName));
+            var result = await handler.Handle(new CreateCompany.Command(tenantId.Value, request.CompanyName), token);
             return result.Match(
                 id => Results.Created("companies/{id}", id.ToString()),
                 error => Results.BadRequest(error.ToProblemDetails())
             );
         }).RequireAuthorization("TENANT.ADMIN");
 
-        grp.MapGet("", async (HttpContext context, [FromServices] IQueryHandler<GetCompaniesByTenant.Query, List<Company>> handler) =>
+        grp.MapGet("", async (HttpContext context, [FromServices] IQueryHandler<GetCompaniesByTenant.Query, List<Company>> handler, CancellationToken token) =>
         {
             var tenantId = context.GetTenantIdFromHttpContext();
             if (tenantId is null) return Results.Unauthorized();
 
-            var result = await handler.Handle(new GetCompaniesByTenant.Query(tenantId.Value));
+            var result = await handler.Handle(new GetCompaniesByTenant.Query(tenantId.Value), token);
             return result.Match(
                 companies => Results.Ok(companies),
                 error => Results.BadRequest(error.ToProblemDetails())

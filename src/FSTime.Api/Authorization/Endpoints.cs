@@ -1,4 +1,5 @@
-﻿using FlintSoft.Endpoints;
+﻿using FlintSoft.CQRS.Handlers;
+using FlintSoft.Endpoints;
 using FSTime.Api.Common.Errors;
 using FSTime.Application.Authorization.Commands;
 using FSTime.Contracts.Authorization;
@@ -14,7 +15,7 @@ public class Endpoints : IEndpoint
     {
         var grp = app.MapGroup("api/auth");
 
-        grp.MapPost("/login", async (LoginRequest request, HttpResponse response, [FromServices] ICommandHandler<LoginUser.Command, LoginResponse> handler) =>
+        grp.MapPost("/login", async (LoginRequest request, HttpResponse response, [FromServices] ICommandHandler<LoginUser.Command, LoginResponse> handler, CancellationToken token) =>
         {
             Guid? tenantId = null;
             if (!string.IsNullOrEmpty(request.TenantId))
@@ -22,7 +23,7 @@ public class Endpoints : IEndpoint
                 tenantId = Guid.Parse(request.TenantId);
             }
 
-            var result = await handler.Handle(new LoginUser.Command(request.Username, request.Password, tenantId));
+            var result = await handler.Handle(new LoginUser.Command(request.Username, request.Password, tenantId), token);
 
             if (result.IsError)
             {
@@ -40,11 +41,11 @@ public class Endpoints : IEndpoint
             return Results.Ok(result.Value);
         });
 
-        grp.MapGet("/refresh", async (HttpContext context, [FromServices] ICommandHandler<RefreshToken.Command, RefreshTokenResponse> handler) =>
+        grp.MapGet("/refresh", async (HttpContext context, [FromServices] ICommandHandler<RefreshToken.Command, RefreshTokenResponse> handler, CancellationToken token) =>
         {
             if (context.Request.Cookies.TryGetValue(COOKIENAME, out var refreshToken))
             {
-                var result = await handler.Handle(new RefreshToken.Command(refreshToken));
+                var result = await handler.Handle(new RefreshToken.Command(refreshToken), token);
                 if (result.IsError)
                 {
                     return result.Errors.ToProblemDetails();
